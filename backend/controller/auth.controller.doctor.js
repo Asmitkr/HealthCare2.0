@@ -1,6 +1,6 @@
 import Doctor from "../models/doctor.model.js";
 import bcrypt from "bcryptjs";
-
+// password123 John doe
 export const signupDoc = async (req, res) => {
   try {
     const {
