@@ -8,6 +8,12 @@ import {
 } from "../controller/auth.controller.company.js";
 
 import {
+  signupDoc,
+  signinDoc,
+  logoutDoc,
+} from "../controller/auth.controller.doctor.js";
+
+import {
   signupUser,
   signinUser,
   logoutUser,
@@ -20,14 +26,14 @@ router.get("/signupComp", (req, res) => {
 });
 
 router.post("/signupUser", signupUser);
-// router.post("/signupDr", signupDr);
+router.post("/signupDoc", signupDoc);
 router.post("/signupComp", signupComp);
 
 router.post("/signinUser", signinUser);
-// router.post("/signinDr", signinDr);
+router.post("/signinDoc", signinDoc);
 router.post("/signinComp", signinComp);
 
 router.post("/logoutUser", logoutUser);
-// router.post("/logoutDr", logoutDr);
+router.post("/logoutDoc", logoutDoc);
 router.post("/logoutComp", logoutComp);
 export default router;
