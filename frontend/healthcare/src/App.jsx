@@ -2,6 +2,9 @@ import { useState } from 'react'
 import './index.css'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import Signup_user from './components/Signup_user'
+import Signup_dr from './components/Signup_dr'
+import Signup_comp from './components/Signup_comp'
 //import Doctor from './components/Doctor'
 //import Insurance from './components/insurance'
 //import User from './components/user'
@@ -15,8 +18,11 @@ function App() {
   return (
     <>
         <Routes>
-          <Route path='/login' element={<Login/>}/>
+          <Route path='/' element={<Login/>}/>
           <Route path='/signup' element={<Signup/>}/>
+          <Route path='/signup_user' element={<Signup_user/>}/>
+          <Route path='/signup_dr' element={<Signup_dr/>}/>
+          <Route path='/signup_comp' element={<Signup_comp/>}/>
         </Routes>
         <ToastContainer position='top-center'/>
     </>

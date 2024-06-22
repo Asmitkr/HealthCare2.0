@@ -13,6 +13,7 @@ const Login = () => {
             <input className="placeholder:text-zinc-500 bg-transparent w-72 outline-none rounded" type="password" placeholder='password' />
             <input className='placeholder:text-zinc-500 bg-green-500 w-72 outline-none rounded mt-3' type="submit" value="Login" />
             </form>
+            <a className='absolute right-0 text-blue-500 mt-3' href="/signup">Don't have an Account!</a>
         </div>
         </div>
         
