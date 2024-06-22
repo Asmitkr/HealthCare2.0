@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
-import jwt from "jsonwebtoken";
+import generateTokenAndSetCookie from "../util/token.js"
+
 // import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 export const signupUser = async (req, res) => {
@@ -28,9 +29,9 @@ export const signupUser = async (req, res) => {
       return res.status(400).json({ error: "Passwords Dont Match" });
     }
 
-    if (gender !== "male" || gender !== "female") {
-      return res.status(400).json({ error: "Invalid Gender Input" });
-    }
+    // if (gender !== "male" || gender !== "female") {
+    //   return res.status(400).json({ error: "Invalid Gender Input" });
+    // }
     const user = await User.findOne({ email });
 
     if (user) {
@@ -53,7 +54,7 @@ export const signupUser = async (req, res) => {
 
     if (newUser) {
       // Generate JWT Token
-      //   generateTokenAndSetCookie(newUser._id, res);
+       generateTokenAndSetCookie(newUser._id, res);
       await newUser.save();
 
       res.status(201).json({
@@ -92,7 +93,8 @@ export const signinUser = async (req, res) => {
     //   sameSite: "strict",
     //   path: '/', // cookie will be available for all routes
     // });
-    // generateTokenAndSetCookie(user._id, res);
+    
+    generateTokenAndSetCookie(user._id, res);
 
     // console.log("yooooooo");
 
@@ -109,7 +111,7 @@ export const signinUser = async (req, res) => {
 
 export const logoutUser = (req, res) => {
   try {
-    // res.cookie("jwt", "", { maxAge: 0 });
+    res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged Out Successfully" });
   } catch (error) {
     console.log("Error in logout controller", error.message);

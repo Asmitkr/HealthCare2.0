@@ -1,5 +1,6 @@
 import Company from "../models/company.model.js";
 import bcrypt from "bcryptjs";
+import generateTokenAndSetCookie from "../util/token.js"
 
 
 export const signupComp = async (req, res) => {
@@ -34,7 +35,7 @@ export const signupComp = async (req, res) => {
   
       if (newcomp) {
         // Generate JWT Token
-      //   generateTokenAndSetCookie(newUser._id, res);
+       generateTokenAndSetCookie(newcomp._id, res);
         await newcomp.save();
   
         res.status(201).json({
@@ -46,7 +47,7 @@ export const signupComp = async (req, res) => {
         res.status(400).json({ error: "Invalid Company Data" });
       }
     } catch (error) {
-      console.log("Error in Signup controller", error.message);
+      console.log("Error in company Signup controller", error.message);
       res.status(500).json({ error: "Internal Server Error" });
     }
 };
@@ -70,7 +71,7 @@ export const signinComp = async (req, res) => {
 
       //const token=jwt.sign({email:email},"USER")
 
-        // generateTokenAndSetCookie(user._id, res);
+      generateTokenAndSetCookie(Comp._id, res);
 
       res.status(200).json({
         _id: Comp._id,
@@ -80,14 +81,14 @@ export const signinComp = async (req, res) => {
       });
 
     } catch (error) {
-    console.log("Error in Login controller", error.message);
+    console.log("Error in Company Login controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
 export const logoutComp = (req, res) => {
     try {
-      // res.cookie("jwt", "", { maxAge: 0 });
+      res.cookie("jwt", "", { maxAge: 0 });
       res.status(200).json({ message: "Logged Out Successfully" });
     } catch (error) {
       console.log("Error in logout controller", error.message);

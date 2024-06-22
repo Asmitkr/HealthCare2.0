@@ -1,5 +1,6 @@
 import Doctor from "../models/doctor.model.js";
 import bcrypt from "bcryptjs";
+import generateTokenAndSetCookie from "../util/token.js"
 // password123 John doe
 export const signupDoc = async (req, res) => {
   try {
@@ -48,7 +49,7 @@ export const signupDoc = async (req, res) => {
 
     if (newdoc) {
       // Generate JWT Token
-      //   generateTokenAndSetCookie(newUser._id, res);
+        generateTokenAndSetCookie(newdoc._id, res);
       await newdoc.save();
 
       res.status(201).json({
@@ -84,7 +85,7 @@ export const signinDoc = async (req, res) => {
 
     //const token=jwt.sign({email:email},"USER")
 
-    // generateTokenAndSetCookie(user._id, res);
+     generateTokenAndSetCookie(doc._id, res);
 
     res.status(200).json({
       _id: doc._id,
@@ -100,7 +101,7 @@ export const signinDoc = async (req, res) => {
 
 export const logoutDoc = (req, res) => {
   try {
-    // res.cookie("jwt", "", { maxAge: 0 });
+    res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged Out Successfully" });
   } catch (error) {
     console.log("Error in logout controller", error.message);
