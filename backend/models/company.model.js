@@ -2,16 +2,16 @@ import mongoose from "mongoose";
 
 const companySchema = new mongoose.Schema(
   {
-    name: {
+    fullName: {
       type: String,
       required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -19,15 +19,15 @@ const companySchema = new mongoose.Schema(
       minlength: 6,
     },
     address: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     phone: {
-        type: String,
-        required: true,
-        trim: true
-    }
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   { timestamps: true }
 );

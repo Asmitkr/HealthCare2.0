@@ -1,32 +1,34 @@
-import { useState } from 'react'
-import './index.css'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import Signup_user from './components/Signup_user'
-import Signup_dr from './components/Signup_dr'
-import Signup_comp from './components/Signup_comp'
+import { useState } from "react";
+import "./index.css";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Signup_user from "./components/Signup_user";
+import Signup_dr from "./components/Signup_dr";
+import Signup_comp from "./components/Signup_comp";
 //import Doctor from './components/Doctor'
 //import Insurance from './components/insurance'
 //import User from './components/user'
-import { BrowserRouter as Router, Routes , Route,} from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-//import { useAuthContext } from './context/AuthContext'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAuthContext } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  //const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
   return (
     <>
-        <Routes>
-          <Route path='/' element={<Login/>}/>
-          <Route path='/signup' element={<Signup/>}/>
-          <Route path='/signup_user' element={<Signup_user/>}/>
-          <Route path='/signup_dr' element={<Signup_dr/>}/>
-          <Route path='/signup_comp' element={<Signup_comp/>}/>
-        </Routes>
-        <ToastContainer position='top-center'/>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup_user" element={<Signup_user />} />
+        <Route path="/signup_dr" element={<Signup_dr />} />
+        <Route path="/signup_comp" element={<Signup_comp />} />
+      </Routes>
+      <ToastContainer position="top-center" />
+      <Toaster />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

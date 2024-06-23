@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
-import generateTokenAndSetCookie from "../util/token.js"
+import generateTokenAndSetCookie from "../util/token.js";
 
 // import generateTokenAndSetCookie from "../utils/generateToken.js";
 
@@ -29,9 +29,9 @@ export const signupUser = async (req, res) => {
       return res.status(400).json({ error: "Passwords Dont Match" });
     }
 
-    // if (gender !== "male" || gender !== "female") {
-    //   return res.status(400).json({ error: "Invalid Gender Input" });
-    // }
+    if (gender !== "male" && gender !== "female") {
+      return res.status(400).json({ error: "Invalid Gender Input" });
+    }
     const user = await User.findOne({ email });
 
     if (user) {
@@ -54,7 +54,7 @@ export const signupUser = async (req, res) => {
 
     if (newUser) {
       // Generate JWT Token
-       generateTokenAndSetCookie(newUser._id, res);
+      generateTokenAndSetCookie(newUser._id, res);
       await newUser.save();
 
       res.status(201).json({
@@ -93,7 +93,7 @@ export const signinUser = async (req, res) => {
     //   sameSite: "strict",
     //   path: '/', // cookie will be available for all routes
     // });
-    
+
     generateTokenAndSetCookie(user._id, res);
 
     // console.log("yooooooo");
