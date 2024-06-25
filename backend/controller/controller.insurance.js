@@ -81,7 +81,7 @@ export const ReplyInsurance = async (req, res) => {
       return res.status(400).json({ error: "Not a valid company" });
     }
 
-    const { _id, reply } = req.body;
+    const { _id, status } = req.body;
 
     // Find insurance record by _id
     const insuranceRecord = await Insurance.findOne({ _id: _id });
@@ -94,19 +94,19 @@ export const ReplyInsurance = async (req, res) => {
 
     // Update the status of insurance record
     const updateResult = await Insurance.updateOne(
-      { _id: _id },
-      { $set: { status: reply } }
+      { _id: _id},
+      { $set: { status: status } }
     );
 
-    if (updateResult.nModified === 1) {
+    if (updateResult.modifiedCount === 1) {
       return res.status(201).json({
         _id: insuranceRecord._id,
-        status: reply,
+        status: status,
       });
     } else {
       return res
         .status(203)
-        .json({ message: "Error in updating status/reply" });
+        .json({ message: "Error in updating status/reply or it is already updated" });
     }
   } catch (error) {
     console.error("Error in ReplyInsurance controller:", error.message);
