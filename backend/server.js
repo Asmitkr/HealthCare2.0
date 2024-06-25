@@ -4,6 +4,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import authroutes from "./routes/auth.routes.js";
+import insuroutes from "./routes/insurance.routes.js";
 
 import connectToMongoDB from "./db/connectToMongodb.js";
 
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use("/api/auth", authroutes);
+app.use("/api/insurance",insuroutes);
 
 // app.get("/", (req, res) => {
 //   res.send("Hello World!");
