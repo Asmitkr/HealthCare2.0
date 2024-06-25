@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import authroutes from "./routes/auth.routes.js";
 import insuroutes from "./routes/insurance.routes.js";
+import appointmentroutes from "./routes/appointment.routes.js"
 
 import connectToMongoDB from "./db/connectToMongodb.js";
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authroutes);
 app.use("/api/insurance",insuroutes);
+app.use("/api/appointment",appointmentroutes)
 
 // app.get("/", (req, res) => {
 //   res.send("Hello World!");
