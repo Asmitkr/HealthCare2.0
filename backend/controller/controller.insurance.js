@@ -1,6 +1,7 @@
 import Company from "../models/company.model.js";
 import User from "../models/user.model.js";
 import Insurance from "../models/insurance.model.js";
+import mongoose from 'mongoose';
 
 export const ApplyInsurance = async (req, res) => {
   try {
@@ -81,10 +82,13 @@ export const ReplyInsurance = async (req, res) => {
       return res.status(400).json({ error: "Not a valid company" });
     }
 
-    const { _id, status } = req.body;
+    const { _id, status} = req.body;
 
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(400).json({ error: "Invalid insurance record ID." });
+    }
     // Find insurance record by _id
-    const insuranceRecord = await Insurance.findOne({ _id: _id });
+    const insuranceRecord = await Insurance.findOne({ _id:_id,companyid:req.company._id});
 
     if (!insuranceRecord) {
       return res
@@ -94,7 +98,7 @@ export const ReplyInsurance = async (req, res) => {
 
     // Update the status of insurance record
     const updateResult = await Insurance.updateOne(
-      { _id: _id},
+      {_id:_id,companyid:req.company._id},
       { $set: { status: status } }
     );
 
@@ -104,6 +108,7 @@ export const ReplyInsurance = async (req, res) => {
         status: status,
       });
     } else {
+      console.log(updateResult);
       return res
         .status(203)
         .json({ message: "Error in updating status/reply or it is already updated" });
