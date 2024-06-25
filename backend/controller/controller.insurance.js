@@ -20,6 +20,11 @@ export const ApplyInsurance = async (req, res) => {
     if (amount <= 0) {
       return res.status(400).json({ error: "Amount is not valid" });
     }
+    if (!isFirstDateGreater(endDate, startDate)) {
+      return res
+        .status(400)
+        .json({ error: "Start Date and End Date are Not Valid" });
+    }
     const comp = await Company.findOne({ email });
     if (!comp) {
       return res
@@ -139,4 +144,18 @@ function isValidDate(dateString) {
     monthLengths[1] = 29;
   }
   return day > 0 && day <= monthLengths[month - 1];
+}
+
+function parseDate(dateString) {
+  var parts = dateString.split("-");
+  var day = parseInt(parts[0], 10);
+  var month = parseInt(parts[1], 10) - 1; // JavaScript months are 0-based
+  var year = parseInt(parts[2], 10);
+  return new Date(year, month, day);
+}
+
+function isFirstDateGreater(dateString1, dateString2) {
+  var date1 = parseDate(dateString1);
+  var date2 = parseDate(dateString2);
+  return date1 > date2;
 }
