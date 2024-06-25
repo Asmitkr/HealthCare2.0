@@ -49,22 +49,18 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <div>
+              <a href="/userhome">
               <button
-                className="btn btn-block btn-sm mt-2 border border-slate-700"
+                className="btn btn-block btn-sm bg-green-500 w-72 outline-none rounded mt-3 border border-slate-700"
                 disabled={loading}
               >
                 {loading ? (
                   <span className="loading loading-spinner"></span>
                 ) : (
-                  "Login"
+                  'Login!'
                 )}
-              </button>
+              </button></a>
             </div>
-            {/* <input
-              className="placeholder:text-zinc-500 bg-green-500 w-72 outline-none rounded mt-3"
-              type="submit"
-              value="Login"
-            /> */}
           </form>
           <a className="absolute right-0 text-blue-500 mt-3" href="/signup">
             Don't have an Account!

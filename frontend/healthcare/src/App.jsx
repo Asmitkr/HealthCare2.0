@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import Signup_user from "./components/Signup_user";
 import Signup_dr from "./components/Signup_dr";
 import Signup_comp from "./components/Signup_comp";
+import Userhome from "./components/Userhome";
 //import Doctor from './components/Doctor'
 //import Insurance from './components/insurance'
 //import User from './components/user'
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signup_user" element={<Signup_user />} />
         <Route path="/signup_dr" element={<Signup_dr />} />
         <Route path="/signup_comp" element={<Signup_comp />} />
+        <Route path="/userhome" element={<Userhome />} />
       </Routes>
       <ToastContainer position="top-center" />
       <Toaster />
