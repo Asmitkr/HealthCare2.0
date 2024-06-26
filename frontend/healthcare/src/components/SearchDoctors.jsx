@@ -1,5 +1,5 @@
-import React from "react";
-import { IoSearchSharp } from "react-icons/io5";
+import React, { useEffect } from "react";
+import { IoSearchSharp, IoCloseSharp } from "react-icons/io5";
 import { useState } from "react";
 
 import useDoctorInfo from "../../zustand/useDoctorInfo";
@@ -10,11 +10,16 @@ const SearchDoctors = () => {
   const [search, setSearch] = useState("");
   const { setDoctorInfo } = useDoctorInfo();
   const { doctors } = useGetDoctors();
+
+  useEffect(() => {
+    setDoctorInfo(doctors);
+  }, [doctors, setDoctorInfo]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!search) return;
-    if (search.length < 3) {
-      return toast.error("Search query must be at least 3 characters long");
+    if (!search) {
+      setDoctorInfo(doctors);
+      return;
     }
 
     let matchingDoctors = doctors.filter(
@@ -28,6 +33,11 @@ const SearchDoctors = () => {
       setDoctorInfo(matchingDoctors);
       setSearch("");
     } else toast.error("No such doctor found");
+  };
+
+  const handleReset = () => {
+    setSearch("");
+    setDoctorInfo(doctors);
   };
 
   return (
@@ -50,6 +60,13 @@ const SearchDoctors = () => {
           className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Search
+        </button>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="text-white absolute end-16 bottom-2.5 bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+        >
+          Reset
         </button>
       </form>
     </div>
