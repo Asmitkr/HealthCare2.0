@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 const useLoginAppUser = () => {
   const [loading, setLoading] = React.useState(false);
+  const [check, setCheck] = React.useState(undefined);
   const { setAuthUser } = useAuthContext();
   const loginAppUser = async ({ type, email, password }) => {
     const success = handleInputError({
@@ -11,8 +12,10 @@ const useLoginAppUser = () => {
       email,
       password,
     });
-    if (!success) return;
-
+    if (!success) {
+      setCheck(false);
+      return;
+    }
     setLoading(true);
     try {
       let data;
@@ -57,14 +60,16 @@ const useLoginAppUser = () => {
       localStorage.setItem("common-user", JSON.stringify(data));
 
       setAuthUser(data);
+      setCheck(true);
     } catch (error) {
       toast.error(error.message);
+      setCheck(false);
     } finally {
       setLoading(false);
     }
   };
 
-  return { loginAppUser, loading };
+  return { loginAppUser, loading, check };
 };
 
 export default useLoginAppUser;

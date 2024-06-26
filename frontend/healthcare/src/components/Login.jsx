@@ -1,17 +1,24 @@
 import React from "react";
 import image from "../assets/login.jpg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import useLoginAppUser from "../hooks/useLoginUser";
 
 const Login = () => {
   const [type, setType] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loginAppUser, loading } = useLoginAppUser();
+  const { loginAppUser, loading, check } = useLoginAppUser();
+  const navigate = useNavigate(); // Initialize useNavigate
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     loginAppUser({ type, email, password });
+    // Assuming loginAppUser returns a promise that resolves to a truthy value on success
+    console.log(check);
+    if (check) {
+      navigate("/userhome"); // Navigate on successful login
+    }
   };
 
   return (
@@ -24,8 +31,7 @@ const Login = () => {
           <h1 className=" text-2xl mb-3">Login!</h1>
           <form
             className=" flex flex-col h-1/2"
-            action=""
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit} // Use handleSubmit for form submission
           >
             <input
               className="placeholder:text-zinc-500 bg-transparent w-72 mb-3 outline-none rounded"
@@ -48,19 +54,16 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <div>
-              <a href="/userhome">
-              <button
-                className="btn btn-block btn-sm bg-green-500 w-72 outline-none rounded mt-3 border border-slate-700"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="loading loading-spinner"></span>
-                ) : (
-                  'Login!'
-                )}
-              </button></a>
-            </div>
+            <button
+              className="btn btn-block btn-sm bg-green-500 w-72 outline-none rounded mt-3 border border-slate-700"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Login!"
+              )}
+            </button>
           </form>
           <a className="absolute right-0 text-blue-500 mt-3" href="/signup">
             Don't have an Account!
