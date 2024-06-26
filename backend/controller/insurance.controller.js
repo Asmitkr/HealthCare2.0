@@ -48,7 +48,6 @@ export const ApplyInsurance = async (req, res) => {
       res.status(400).json({ error: "Invalid User Data" });
     }
   } catch (error) {
-    console.log("Error in Apply Insurance controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -65,7 +64,6 @@ export const CurrentInsurance = async (req, res) => {
       res.status(202);
     }
   } catch (error) {
-    console.log("Error in Current Insurance controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -82,7 +80,6 @@ export const CompanyInsurance = async (req, res) => {
       res.status(202);
     }
   } catch (error) {
-    console.log("Error in company Insurance controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -119,13 +116,11 @@ export const ReplyInsurance = async (req, res) => {
         status: status,
       });
     } else {
-      console.log(updateResult);
       return res
         .status(203)
         .json({ message: "Error in updating status/reply or it is already updated" });
     }
   } catch (error) {
-    console.error("Error in ReplyInsurance controller:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
