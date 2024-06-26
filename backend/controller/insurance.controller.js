@@ -1,6 +1,7 @@
 import Company from "../models/company.model.js";
 import User from "../models/user.model.js";
 import Insurance from "../models/insurance.model.js";
+import InsurancePlans from "../models/insurancePlans.model.js";
 import mongoose from 'mongoose';
 
 export const ApplyInsurance = async (req, res) => {
@@ -8,36 +9,28 @@ export const ApplyInsurance = async (req, res) => {
     if (!req.user) {
       return res.status(400).json({ error: "Not Valid User" });
     }
-    const { startDate, endDate, amount, email } = req.body;
-    if (!isValidEmail(email)) {
-      return res.status(400).json({ error: "Email Not Valid" });
-    }
+    const { startDate,Planid} = req.body;
     if (!isValidDate(startDate)) {
       return res.status(400).json({ error: "Start Date Not Valid" });
     }
-    if (!isValidDate(endDate)) {
-      return res.status(400).json({ error: "Start Date Not Valid" });
+    if(!Planid){
+      return res.status(400).json({error:"Plan id is not given"});
     }
-    if (amount <= 0) {
-      return res.status(400).json({ error: "Amount is not valid" });
-    }
-    if (!isFirstDateGreater(endDate, startDate)) {
+
+    const plan = await InsurancePlans.findOne({ _id:Planid });
+    const endDate=addMonths(startDate,plan.duration);
+    if (!plan) {
       return res
         .status(400)
-        .json({ error: "Start Date and End Date are Not Valid" });
-    }
-    const comp = await Company.findOne({ email });
-    if (!comp) {
-      return res
-        .status(400)
-        .json({ error: "a Company with this email Does not exist" });
+        .json({ error: "No plan record with this plan id" });
     }
     const newinsurance = new Insurance({
       userid: req.user._id,
-      companyid: comp._id,
+      companyid:plan.companyid,
+      planid: Planid,
       startDate,
       endDate,
-      amount,
+      amount:plan.amount,
     });
 
     if (newinsurance) {
@@ -46,6 +39,7 @@ export const ApplyInsurance = async (req, res) => {
       res.status(201).json({
         _id: newinsurance._id,
         startDate: newinsurance.startDate,
+        companyid:plan.companyid,
         endDate: newinsurance.endDate,
         status: newinsurance.status,
         amount: newinsurance.amount,
@@ -62,7 +56,7 @@ export const ApplyInsurance = async (req, res) => {
 export const CurrentInsurance = async (req, res) => {
   try {
     if (!req.user) {
-      return res.status(400).json({ error: "Not Valid User" });
+      return res.status(400).json({ error: "Not a Valid User" });
     }
     const insurs = await Insurance.find({ userid: req.user._id });
     if (insurs.length != 0) {
@@ -72,6 +66,23 @@ export const CurrentInsurance = async (req, res) => {
     }
   } catch (error) {
     console.log("Error in Current Insurance controller", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const CompanyInsurance = async (req, res) => {
+  try {
+    if (!req.company) {
+      return res.status(400).json({ error: "Not a Valid Company" });
+    }
+    const insurs = await Insurance.find({ companyid: req.company._id });
+    if (insurs.length != 0) {
+      res.status(201).json(insurs);
+    } else {
+      res.status(202);
+    }
+  } catch (error) {
+    console.log("Error in company Insurance controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -88,7 +99,7 @@ export const ReplyInsurance = async (req, res) => {
       return res.status(400).json({ error: "Invalid insurance record ID." });
     }
     // Find insurance record by _id
-    const insuranceRecord = await Insurance.findOne({ _id:_id,companyid:req.company._id});
+    const insuranceRecord = await Insurance.findOne({ _id:_id});
 
     if (!insuranceRecord) {
       return res
@@ -98,8 +109,8 @@ export const ReplyInsurance = async (req, res) => {
 
     // Update the status of insurance record
     const updateResult = await Insurance.updateOne(
-      {_id:_id,companyid:req.company._id},
-      { $set: { status: status } }
+      {_id:_id},
+      { $set: { status: status }}
     );
 
     if (updateResult.modifiedCount === 1) {
@@ -119,10 +130,6 @@ export const ReplyInsurance = async (req, res) => {
   }
 };
 
-function isValidEmail(email) {
-  const re = /@.*\.com/;
-  return re.test(email);
-}
 
 function isValidDate(dateString) {
   // Check if the date string matches the format dd-mm-yyyy
@@ -151,16 +158,31 @@ function isValidDate(dateString) {
   return day > 0 && day <= monthLengths[month - 1];
 }
 
-function parseDate(dateString) {
-  var parts = dateString.split("-");
-  var day = parseInt(parts[0], 10);
-  var month = parseInt(parts[1], 10) - 1; // JavaScript months are 0-based
-  var year = parseInt(parts[2], 10);
-  return new Date(year, month, day);
-}
-
-function isFirstDateGreater(dateString1, dateString2) {
-  var date1 = parseDate(dateString1);
-  var date2 = parseDate(dateString2);
-  return date1 > date2;
+function addMonths(startDateStr, monthsToAddStr) {
+  // Parse the start date string
+  let parts = startDateStr.split("-");
+  let day = parseInt(parts[0], 10);
+  let month = parseInt(parts[1], 10) - 1; // JavaScript months are zero-indexed
+  let year = parseInt(parts[2], 10);
+  
+  // Parse the months to add string
+  let monthsToAdd = parseInt(monthsToAddStr, 10);
+  
+  // Create a date object from the start date
+  let startDate = new Date(year, month, day);
+  
+  // Add the specified number of months
+  startDate.setMonth(startDate.getMonth() + monthsToAdd);
+  
+  // Handle end-of-month edge cases
+  if (startDate.getDate() !== day) {
+      startDate.setDate(0); // Set to the last day of the previous month
+  }
+  
+  // Format the final date
+  let finalDay = ("0" + startDate.getDate()).slice(-2);
+  let finalMonth = ("0" + (startDate.getMonth() + 1)).slice(-2); // Months are zero-indexed
+  let finalYear = startDate.getFullYear();
+  
+  return `${finalDay}-${finalMonth}-${finalYear}`;
 }

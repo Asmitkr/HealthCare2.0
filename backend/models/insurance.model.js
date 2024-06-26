@@ -11,6 +11,11 @@ const insuranceSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  planid: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   startDate: {
     type: String,
     required: true,
@@ -22,7 +27,7 @@ const insuranceSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true,
-    min:0,
+    min:1,
   },
   status: {
     type: String,
