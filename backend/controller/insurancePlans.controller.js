@@ -25,6 +25,7 @@ export const AddPlan = async (req, res) => {
 
       res.status(201).json({
         _id: newinsurancePlan._id,
+        company:req.company.fullName,
         amount: newinsurancePlan.amount,
         duration: newinsurancePlan.duration,
       });
