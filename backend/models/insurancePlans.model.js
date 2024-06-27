@@ -13,14 +13,14 @@ const insuranceplanSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true,
-    min:0,
+    min: 0,
   },
-  type:{
-    type:String,
-    default:"insurance needed",
-  }
+  type: {
+    type: String,
+    default: "insurance needed",
+  },
 });
 
-const InsurancePlans = mongoose.model("InsurancePlans", insuranceplanSchema);
+const insurancePlans = mongoose.model("InsurancePlans", insuranceplanSchema);
 
-export default InsurancePlans;
+export default insurancePlans;

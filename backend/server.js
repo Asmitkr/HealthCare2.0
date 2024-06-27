@@ -7,6 +7,8 @@ import authroutes from "./routes/auth.routes.js";
 import insuroutes from "./routes/insurance.routes.js";
 import appointmentroutes from "./routes/appointment.routes.js";
 import doctorsroutes from "./routes/doctors.routes.js";
+import companiesroutes from "./routes/companies.routes.js";
+import insurancePlansroutes from "./routes/insurancePlans.routes.js";
 
 import connectToMongoDB from "./db/connectToMongodb.js";
 
@@ -21,7 +23,9 @@ app.use("/api/auth", authroutes);
 app.use("/api/insurance", insuroutes);
 app.use("/api/appointment", appointmentroutes);
 app.use("/api/doctors", doctorsroutes);
+app.use("/api/companies", companiesroutes);
 
+app.use("/api/insurancePlans", insurancePlansroutes);
 // app.get("/", (req, res) => {
 //   res.send("Hello World!");
 // });

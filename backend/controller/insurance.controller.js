@@ -2,23 +2,23 @@ import Company from "../models/company.model.js";
 import User from "../models/user.model.js";
 import Insurance from "../models/insurance.model.js";
 import InsurancePlans from "../models/insurancePlans.model.js";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export const ApplyInsurance = async (req, res) => {
   try {
     if (!req.user) {
       return res.status(400).json({ error: "Not Valid User" });
     }
-    const { startDate,Planid} = req.body;
+    const { startDate, planid } = req.body;
     if (!isValidDate(startDate)) {
       return res.status(400).json({ error: "Start Date Not Valid" });
     }
-    if(!Planid){
-      return res.status(400).json({error:"Plan id is not given"});
+    if (!planid) {
+      return res.status(400).json({ error: "Plan id is not given" });
     }
 
-    const plan = await InsurancePlans.findOne({ _id:Planid });
-    const endDate=addMonths(startDate,plan.duration);
+    const plan = await InsurancePlans.findOne({ _id: planid });
+    const endDate = addMonths(startDate, plan.duration);
     if (!plan) {
       return res
         .status(400)
@@ -26,11 +26,11 @@ export const ApplyInsurance = async (req, res) => {
     }
     const newinsurance = new Insurance({
       userid: req.user._id,
-      companyid:plan.companyid,
-      planid: Planid,
+      companyid: plan.companyid,
+      planid: planid,
       startDate,
       endDate,
-      amount:plan.amount,
+      amount: plan.amount,
     });
 
     if (newinsurance) {
@@ -39,7 +39,7 @@ export const ApplyInsurance = async (req, res) => {
       res.status(201).json({
         _id: newinsurance._id,
         startDate: newinsurance.startDate,
-        companyid:plan.companyid,
+        companyid: plan.companyid,
         endDate: newinsurance.endDate,
         status: newinsurance.status,
         amount: newinsurance.amount,
@@ -58,6 +58,7 @@ export const CurrentInsurance = async (req, res) => {
       return res.status(400).json({ error: "Not a Valid User" });
     }
     const insurs = await Insurance.find({ userid: req.user._id });
+    console.log(insurs);
     if (insurs.length != 0) {
       res.status(201).json(insurs);
     } else {
@@ -90,13 +91,13 @@ export const ReplyInsurance = async (req, res) => {
       return res.status(400).json({ error: "Not a valid company" });
     }
 
-    const { _id, status} = req.body;
+    const { _id, status } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid insurance record ID." });
     }
     // Find insurance record by _id
-    const insuranceRecord = await Insurance.findOne({ _id:_id});
+    const insuranceRecord = await Insurance.findOne({ _id: _id });
 
     if (!insuranceRecord) {
       return res
@@ -106,8 +107,8 @@ export const ReplyInsurance = async (req, res) => {
 
     // Update the status of insurance record
     const updateResult = await Insurance.updateOne(
-      {_id:_id},
-      { $set: { status: status }}
+      { _id: _id },
+      { $set: { status: status } }
     );
 
     if (updateResult.modifiedCount === 1) {
@@ -116,15 +117,14 @@ export const ReplyInsurance = async (req, res) => {
         status: status,
       });
     } else {
-      return res
-        .status(203)
-        .json({ message: "Error in updating status/reply or it is already updated" });
+      return res.status(203).json({
+        message: "Error in updating status/reply or it is already updated",
+      });
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 function isValidDate(dateString) {
   // Check if the date string matches the format dd-mm-yyyy
@@ -159,25 +159,25 @@ function addMonths(startDateStr, monthsToAddStr) {
   let day = parseInt(parts[0], 10);
   let month = parseInt(parts[1], 10) - 1; // JavaScript months are zero-indexed
   let year = parseInt(parts[2], 10);
-  
+
   // Parse the months to add string
   let monthsToAdd = parseInt(monthsToAddStr, 10);
-  
+
   // Create a date object from the start date
   let startDate = new Date(year, month, day);
-  
+
   // Add the specified number of months
   startDate.setMonth(startDate.getMonth() + monthsToAdd);
-  
+
   // Handle end-of-month edge cases
   if (startDate.getDate() !== day) {
-      startDate.setDate(0); // Set to the last day of the previous month
+    startDate.setDate(0); // Set to the last day of the previous month
   }
-  
+
   // Format the final date
   let finalDay = ("0" + startDate.getDate()).slice(-2);
   let finalMonth = ("0" + (startDate.getMonth() + 1)).slice(-2); // Months are zero-indexed
   let finalYear = startDate.getFullYear();
-  
+
   return `${finalDay}-${finalMonth}-${finalYear}`;
 }
