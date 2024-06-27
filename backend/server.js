@@ -5,7 +5,8 @@ import dotenv from "dotenv";
 
 import authroutes from "./routes/auth.routes.js";
 import insuroutes from "./routes/insurance.routes.js";
-import appointmentroutes from "./routes/appointment.routes.js";
+import appointmentroutesUser from "./routes/appointment.user.routes.js";
+import appointmentroutesDoctor from "./routes/appointment.doctor.routes.js";
 import doctorsroutes from "./routes/doctors.routes.js";
 import companiesroutes from "./routes/companies.routes.js";
 import insurancePlansroutes from "./routes/insurancePlans.routes.js";
@@ -21,9 +22,11 @@ app.use(cookieParser());
 
 app.use("/api/auth", authroutes);
 app.use("/api/insurance", insuroutes);
-app.use("/api/appointment", appointmentroutes);
+app.use("/api/appointment", appointmentroutesUser);
+app.use("/api/appointment", appointmentroutesDoctor);
 app.use("/api/doctors", doctorsroutes);
 app.use("/api/companies", companiesroutes);
+
 
 app.use("/api/insurancePlans", insurancePlansroutes);
 // app.get("/", (req, res) => {
