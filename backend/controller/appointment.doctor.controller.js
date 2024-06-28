@@ -79,15 +79,30 @@ export const PreviousAppointment = async(req,res) => {
 
         const {patientId} = req.query;
 
-        const appointment = await Appointment.find({doctorId:doctorId,patientId:patientId}).populate("patientId");
+        let appointment = await Appointment.find({doctorId:doctorId,patientId:patientId}).populate("patientId");
         if(!appointment) {
             return res.status(200).json({message:"No Appintment  With this User"})
         }
-        const previousAppointments = appointment.filter(request => !compareDateTime(request.date, request.time));
+        
+        let previousAppointments = appointment.filter(request => !compareDateTime(request.date, request.time));
 
         if (previousAppointments.length === 0) {
             return res.status(200).json({ message: "No Previous appointment with this user" });
         }
+
+        previousAppointments = appointment.filter(request => !compareDateTime(request.date, request.time)&&request.status ==="Pending");
+         // Update the status of past or current appointments to 'not_required'
+         const updatePromises = previousAppointments.map(appointment => {
+            appointment.status = 'Not Replied';
+            return appointment.save();
+        });
+
+        await Promise.all(updatePromises);
+
+        appointment = await Appointment.find({doctorId:doctorId,patientId:patientId}).populate("patientId");
+
+        previousAppointments = appointment.filter(request => !compareDateTime(request.date, request.time));
+        
 
         res.status(200).json(previousAppointments);
 
@@ -108,14 +123,13 @@ function compareDateTime(dateString, timeString) {
     const [hours, minutes] = timeString.split(':').map(Number);
 
     // Combine date and time into a single Date object in UTC
-    const dateTime = new Date(Date.UTC(year, month - 1, day, hours - 5, minutes - 30));
+    const dateTime = new Date(year, month - 1, day, hours, minutes);
 
-    // Get the current date and time in IST (UTC+5:30)
-    const now = new Date();
-    const nowIST = new Date(now.getTime() + (330 * 60 * 1000)); // IST is UTC + 5:30 (330 minutes)
+    // Get the current date and time in IST
+    const now = new Date();// IST is UTC + 5:30 (330 minutes) // IST is UTC + 5:30 (330 minutes)
 
     // Compare the two dates
-    if (dateTime > nowIST) {
+    if (dateTime > now) {
         return true;
     } else {
         return false;
