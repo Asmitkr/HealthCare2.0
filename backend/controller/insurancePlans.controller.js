@@ -15,6 +15,7 @@ export const AddPlan = async (req, res) => {
     }
 
     const newinsurancePlan = new InsurancePlans({
+      companyname:req.company.fullName,
       companyid: req.company._id,
       duration,
       amount,
@@ -40,7 +41,7 @@ export const AddPlan = async (req, res) => {
 
 export const SearchPlan = async (req, res) => {
   try {
-    if (!req.user) {
+    if (!req.user && !req.company) {
       return res.status(400).json({ error: "Not Valid User" });
     }
     const { companyid } = req.body;

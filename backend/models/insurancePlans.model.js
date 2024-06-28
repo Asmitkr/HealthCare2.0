@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const insuranceplanSchema = new mongoose.Schema({
+  companyname: {
+    type: String,
+    required: true,
+  },
   companyid: {
     type: String,
     required: true,
