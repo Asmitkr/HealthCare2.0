@@ -6,9 +6,7 @@ import Signup_user from "./components/Signup_user";
 import Signup_dr from "./components/Signup_dr";
 import Signup_comp from "./components/Signup_comp";
 import Userhome from "./components/Userhome";
-//import Doctor from './components/Doctor'
-//import Insurance from './components/insurance'
-//import User from './components/user'
+import Doctorhome from "./components/Doctorhome";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +24,7 @@ function App() {
         <Route path="/signup_dr" element={<Signup_dr />} />
         <Route path="/signup_comp" element={<Signup_comp />} />
         <Route path="/userhome" element={<Userhome />} />
+        <Route path="/doctorhome" element={<Doctorhome />} />
       </Routes>
       <ToastContainer position="top-center" />
       <Toaster />

@@ -17,7 +17,12 @@ const Login = () => {
     // Assuming loginAppUser returns a promise that resolves to a truthy value on success
     console.log(check);
     if (check) {
+      if(type=='User')
       navigate("/userhome"); // Navigate on successful login
+      if(type=='Doctor')
+        navigate("/doctorhome");
+      if(type=='Company')
+        navigate("/companyhome");
     }
   };
 

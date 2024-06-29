@@ -2,6 +2,7 @@ import React from "react";
 import image from "../assets/login.jpg";
 import { useState } from "react";
 import useSignupDoc from "../hooks/useSignupDoc";
+import { redirect } from "react-router-dom";
 
 const Signup_dr = () => {
   const [inputs, SetInputs] = useState({
@@ -122,7 +123,7 @@ const Signup_dr = () => {
                 />
                 <div>
                   <button
-                    className="btn btn-block btn-sm mt-2 border border-slate-700"
+                    className="btn btn-block btn-sm bg-green-500 w-72 outline-none rounded mt-3 border border-slate-700"
                     disabled={loading}
                   >
                     {loading ? (

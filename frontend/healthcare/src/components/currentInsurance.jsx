@@ -17,7 +17,7 @@ const CurrentInsurance = () => {
   };
   return (
     <div className="mt-2 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
-      <p className="text-xl">Current Appointment</p>
+      <p className="text-xl">Current Insurance</p>
       {loading ? (
         <p>Loading appointments...</p>
       ) : (
