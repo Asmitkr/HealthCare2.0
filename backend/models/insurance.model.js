@@ -39,10 +39,9 @@ const insuranceSchema = new mongoose.Schema({
     enum:["Applied","Not Applied","Approved","Rejected"],
     default:"Not Applied",
   },
-  claim:{
-    type:String,
-    enum:["Claimed","Not Claimed"],
-    default:"Not Claimed",
+  Desc: {
+    type: String,
+    trim: true,
   }
 });
 

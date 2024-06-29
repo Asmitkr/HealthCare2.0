@@ -59,8 +59,6 @@ export const CurrentInsurance = async (req, res) => {
       return res.status(400).json({ error: "Not a Valid User" });
     }
     const insurs = await Insurance.find({ userid: req.user._id });
-    
-    console.log(insurs);
     if (insurs.length != 0) {
 
       const insursWithCompanyNames = await Promise.all(insurs.map(async (insur) => {
@@ -92,7 +90,9 @@ export const CompanyInsurance = async (req, res) => {
           const user = await User.findById(insur.userid);
           return {
               ...insur.toObject(),
-              username: user.fullName
+              username: user.fullName,
+              email:user.email,
+              phone:user.phone,
           };
       }));
       res.status(201).json(insursWithUserNames);
@@ -145,6 +145,87 @@ export const ReplyInsurance = async (req, res) => {
   }
 };
 
+export const ApplyClaim = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(400).json({ error: "Not a valid user" });
+    }
+
+    const { _id,description } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(400).json({ error: "Invalid insurance record ID." });
+    }
+    // Find insurance record by _id
+    const insuranceRecord = await Insurance.findOne({ _id: _id });
+    if (!insuranceRecord || insuranceRecord.status!="Approved") {
+      return res
+        .status(404)
+        .json({ error: "No insurance record found for this ID." });
+    }
+
+    // Update the status of insurance record
+    const updateResult = await Insurance.updateOne(
+      { _id: _id },
+      { $set: { Desc: description ,claimRequest:"Applied"} }
+    );
+
+    if (updateResult.modifiedCount === 1) {
+      return res.status(201).json({
+        _id: insuranceRecord._id,
+        Desc: description,
+        claimRequest:"Applied",
+      });
+    } else {
+      return res.status(203).json({
+        message: "Error in applying claim or it is already updated",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const ReplyClaim = async (req, res) => {
+  try {
+    if (!req.company) {
+      return res.status(400).json({ error: "Not a valid company" });
+    }
+
+    const { _id, claimReply } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      return res.status(400).json({ error: "Invalid insurance record ID." });
+    }
+    // Find insurance record by _id
+    const insuranceRecord = await Insurance.findOne({ _id: _id });
+
+    if (!insuranceRecord) {
+      return res
+        .status(404)
+        .json({ error: "No insurance record found for this ID." });
+    }
+
+    // Update the status of insurance record
+    const updateResult = await Insurance.updateOne(
+      { _id: _id },
+      { $set: { claimRequest: claimReply } }
+    );
+
+    if (updateResult.modifiedCount === 1) {
+      return res.status(201).json({
+        _id: insuranceRecord._id,
+        claimRequest: claimReply,
+      });
+    } else {
+      return res.status(203).json({
+        message: "Error in updating claimRequest or it is already updated",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 function isValidDate(dateString) {
   // Check if the date string matches the format dd-mm-yyyy
   var regex = /^(\d{2})-(\d{2})-(\d{4})$/;

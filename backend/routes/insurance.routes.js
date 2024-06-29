@@ -6,6 +6,8 @@ import {
   CurrentInsurance,
   ReplyInsurance,
   CompanyInsurance,
+  ApplyClaim,
+  ReplyClaim,
 } from "../controller/insurance.controller.js";
 import {
   AddPlan,
@@ -18,6 +20,8 @@ router.post("/ApplyInsurance", [isAuth], ApplyInsurance);
 router.get("/CurrentInsurance", [isAuth], CurrentInsurance);
 router.post("/ReplyInsurance", [isAuth], ReplyInsurance);
 router.post("/CompanyInsurance", [isAuth], CompanyInsurance);
+router.post("/ApplyClaim", [isAuth], ApplyClaim);
+router.post("/ReplyClaim", [isAuth], ReplyClaim);
 
 router.post("/AddPlan", [isAuth], AddPlan);
 router.post("/SearchPlan", [isAuth], SearchPlan);

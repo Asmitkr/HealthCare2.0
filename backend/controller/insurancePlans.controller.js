@@ -34,7 +34,6 @@ export const AddPlan = async (req, res) => {
       res.status(400).json({ error: "Invalid Plan Data" });
     }
   } catch (error) {
-    console.log("Error in Add plan controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -62,7 +61,6 @@ export const SearchPlan = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log("Error in Add plan controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
