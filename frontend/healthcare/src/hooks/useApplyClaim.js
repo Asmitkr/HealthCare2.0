@@ -1,19 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const useApplyInsurance = () => {
+const useApplyClaim = () => {
   const [loading, setLoading] = useState(false);
 
-  const applyInsurance = async (data) => {
+  const applyClaim = async (data) => {
     setLoading(true);
-    if (data.startDate) {
-      const parts = data.startDate.split("-");
-      data.startDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-    }
-    console.log(data);
-
+    console.log("claim data", data);
     try {
-      const res = await fetch("/api/insurance/ApplyInsurance", {
+      const res = await fetch("/api/insurance/ApplyClaim", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(data),
@@ -31,7 +26,7 @@ const useApplyInsurance = () => {
     }
   };
 
-  return { loading, applyInsurance };
+  return { loading, applyClaim };
 };
 
-export default useApplyInsurance;
+export default useApplyClaim;

@@ -11,10 +11,11 @@ const useGetInsurance = () => {
       try {
         const res = await fetch("/api/insurance/CurrentInsurance");
         const data = await res.json();
+        console.log("insurance data", data);
         if (data.error) {
           throw new Error(data.error);
         }
-        console.log("insurance data", data);
+        // console.log("insurance data", data);
         setInsurance(data);
       } catch (error) {
         toast.error(error.message);

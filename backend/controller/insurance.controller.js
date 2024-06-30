@@ -37,7 +37,7 @@ export const ApplyInsurance = async (req, res) => {
       await newinsurance.save();
 
       res.status(201).json({
-        companyname:plan.companyname,
+        companyname: plan.companyname,
         _id: newinsurance._id,
         startDate: newinsurance.startDate,
         companyid: plan.companyid,
@@ -59,20 +59,23 @@ export const CurrentInsurance = async (req, res) => {
       return res.status(400).json({ error: "Not a Valid User" });
     }
     const insurs = await Insurance.find({ userid: req.user._id });
+    // console.log(insurs);
     if (insurs.length != 0) {
-
-      const insursWithCompanyNames = await Promise.all(insurs.map(async (insur) => {
-        const company = await Company.findById(insur.companyid);
-        return {
+      const insursWithCompanyNames = await Promise.all(
+        insurs.map(async (insur) => {
+          const company = await Company.findById(insur.companyid);
+          return {
             ...insur.toObject(),
-            companyname: company.fullName
-        };
-      }));
+            companyname: company.fullName,
+          };
+        })
+      );
       res.status(201).json(insursWithCompanyNames);
     } else {
       res.status(202);
     }
   } catch (error) {
+    console.log("xxx");
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -86,18 +89,22 @@ export const CompanyInsurance = async (req, res) => {
     if (insurs.length != 0) {
       const insurs = await Insurance.find({ companyid: req.company._id });
 
-      const insursWithUserNames = await Promise.all(insurs.map(async (insur) => {
+      const insursWithUserNames = await Promise.all(
+        insurs.map(async (insur) => {
           const user = await User.findById(insur.userid);
           return {
-              ...insur.toObject(),
-              username: user.fullName,
-              email:user.email,
-              phone:user.phone,
+            ...insur.toObject(),
+            username: user.fullName,
+            email: user.email,
+            phone: user.phone,
           };
-      }));
+        })
+      );
       res.status(201).json(insursWithUserNames);
     } else {
-      res.status(202).json({message:"No records are available for thiss company"});
+      res
+        .status(202)
+        .json({ message: "No records are available for thiss company" });
     }
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -151,14 +158,16 @@ export const ApplyClaim = async (req, res) => {
       return res.status(400).json({ error: "Not a valid user" });
     }
 
-    const { _id,description } = req.body;
+    const { _id, description } = req.body;
 
+    console.log(_id, description);
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid insurance record ID." });
     }
     // Find insurance record by _id
     const insuranceRecord = await Insurance.findOne({ _id: _id });
-    if (!insuranceRecord || insuranceRecord.status!="Approved") {
+    console.log(insuranceRecord);
+    if (!insuranceRecord || insuranceRecord.status != "Approved") {
       return res
         .status(404)
         .json({ error: "No insurance record found for this ID." });
@@ -167,14 +176,14 @@ export const ApplyClaim = async (req, res) => {
     // Update the status of insurance record
     const updateResult = await Insurance.updateOne(
       { _id: _id },
-      { $set: { Desc: description ,claimRequest:"Applied"} }
+      { $set: { Desc: description, claimRequest: "Applied" } }
     );
 
     if (updateResult.modifiedCount === 1) {
       return res.status(201).json({
         _id: insuranceRecord._id,
         Desc: description,
-        claimRequest:"Applied",
+        claimRequest: "Applied",
       });
     } else {
       return res.status(203).json({

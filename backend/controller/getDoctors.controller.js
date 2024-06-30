@@ -19,7 +19,7 @@ export const getDoctors = async (req, res) => {
 
     // Perform search operation with constructed query object
     const doctors = await Doctor.find(queryObject).select("-password"); // Exclude password from the results
-    console.log(doctors);
+    // console.log(doctors);
 
     res.status(200).json(doctors);
   } catch (error) {

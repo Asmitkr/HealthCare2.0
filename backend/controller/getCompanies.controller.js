@@ -3,7 +3,7 @@ import Company from "../models/company.model.js";
 export const getCompanies = async (req, res) => {
   try {
     const companies = await Company.find({}).select("-password");
-    console.log(companies);
+    // console.log(companies);
 
     res.status(200).json(companies);
   } catch (error) {
