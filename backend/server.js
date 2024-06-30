@@ -10,6 +10,7 @@ import appointmentroutesDoctor from "./routes/appointment.doctor.routes.js";
 import doctorsroutes from "./routes/doctors.routes.js";
 import companiesroutes from "./routes/companies.routes.js";
 import insurancePlansroutes from "./routes/insurancePlans.routes.js";
+import userroutes from "./routes/user.routes.js";
 
 import connectToMongoDB from "./db/connectToMongodb.js";
 
@@ -26,7 +27,7 @@ app.use("/api/appointment", appointmentroutesUser);
 app.use("/api/appointment", appointmentroutesDoctor);
 app.use("/api/doctors", doctorsroutes);
 app.use("/api/companies", companiesroutes);
-
+app.use("/api/users", userroutes);
 
 app.use("/api/insurancePlans", insurancePlansroutes);
 // app.get("/", (req, res) => {

@@ -24,6 +24,7 @@
     "react-router-dom": "^6.23.1",
     "react-tailwindcss-datepicker": "^1.6.6",
     "react-toastify": "^10.0.5",
+    "react-transition-group": "^4.4.5",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

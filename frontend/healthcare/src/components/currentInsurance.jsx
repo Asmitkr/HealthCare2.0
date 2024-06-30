@@ -72,7 +72,7 @@ const CurrentInsurance = () => {
       <p className="text-xl">Current Insurance</p>
       {loadingInsurance ? (
         <p>Loading insurance...</p>
-      ) : (
+      ) : insurance.length > 0 ? (
         <table className="table-auto w-full">
           <thead>
             <tr>
@@ -101,6 +101,8 @@ const CurrentInsurance = () => {
             ))}
           </tbody>
         </table>
+      ) : (
+        <p>No insurance found.</p>
       )}
     </div>
   );

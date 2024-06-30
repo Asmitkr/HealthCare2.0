@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find({}).select("-password");
-    console.log(users);
+    // console.log(users);
 
     res.status(200).json(users);
   } catch (error) {
