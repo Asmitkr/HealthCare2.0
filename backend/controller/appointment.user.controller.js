@@ -58,6 +58,13 @@ export const CurrentAppointments = async(req,res)=>{
         }
         const appointmentsToUpdate = appointments.filter(appointment => !compareDateTime(appointment.date, appointment.time)&&appointment.status === "Pending");
 
+
+        appointments.sort((a, b) => {
+            const dateA = new Date(`${a.date.split("-").reverse().join("-")}T${a.time}`);
+            const dateB = new Date(`${b.date.split("-").reverse().join("-")}T${b.time}`);
+            return dateA - dateB;
+          });
+          
         if (appointmentsToUpdate.length === 0) {
             return res.status(200).json(appointments);
         }
@@ -71,6 +78,12 @@ export const CurrentAppointments = async(req,res)=>{
         await Promise.all(updatePromises);
 
         appointments = await Appointment.find({ patientId }).populate('doctorId');
+
+        appointments.sort((a, b) => {
+            const dateA = new Date(`${a.date.split("-").reverse().join("-")}T${a.time}`);
+            const dateB = new Date(`${b.date.split("-").reverse().join("-")}T${b.time}`);
+            return dateA - dateB;
+          });
 
         return res.status(200).json(appointments);
 
@@ -136,15 +149,22 @@ const isDateWithinThreeDays = (enteredDateStr) => {
     // Parse the entered date (assuming it is in "dd-mm-yyyy" format)
     const [day, month, year] = enteredDateStr.split('-').map(Number);
     const enteredDate = new Date(year, month - 1, day);
-
-    // Get the current date and time in IST
+  
+    // Get the current date in IST
     const now = new Date();
     const currentDateIST = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-
+    
+    // Set hours, minutes, seconds, and milliseconds to 0 for an accurate comparison
+    currentDateIST.setHours(0, 0, 0, 0);
+  
     // Get the date 3 days from now in IST
     const threeDaysFromNow = new Date(currentDateIST);
     threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
-
+  
     // Compare the entered date with the current date and the date 3 days from now
     return enteredDate >= currentDateIST && enteredDate <= threeDaysFromNow;
-};
+  };
+  
+  // Example usage:
+  //console.log(isDateWithinThreeDays("30-06-2024")); // Adjust the date to test
+  

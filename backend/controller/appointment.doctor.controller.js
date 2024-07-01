@@ -20,6 +20,11 @@ export const PendingRequest = async (req, res) => {
         .status(200)
         .json({ message: "No valid pending requests found" });
     }
+    validRequests.sort((a, b) => {
+      const dateA = new Date(`${a.date.split("-").reverse().join("-")}T${a.time}`);
+      const dateB = new Date(`${b.date.split("-").reverse().join("-")}T${b.time}`);
+      return dateA - dateB;
+    });
 
     res.status(200).json(validRequests);
   } catch (error) {
@@ -73,6 +78,11 @@ export const UpcomingAppointment = async (req, res) => {
     if (upcomingAppointment.length === 0) {
       return res.status(200).json({ message: "No appointment found" });
     }
+    upcomingAppointment.sort((a, b) => {
+      const dateA = new Date(`${a.date.split("-").reverse().join("-")}T${a.time}`);
+      const dateB = new Date(`${b.date.split("-").reverse().join("-")}T${b.time}`);
+      return dateA - dateB;
+    });
 
     res.status(200).json(upcomingAppointment);
   } catch (error) {
@@ -128,6 +138,11 @@ export const PreviousAppointment = async (req, res) => {
     );
 
     console.log("Previous Appointments: ", previousAppointments);
+    previousAppointments.sort((a, b) => {
+      const dateA = new Date(`${a.date.split("-").reverse().join("-")}T${a.time}`);
+      const dateB = new Date(`${b.date.split("-").reverse().join("-")}T${b.time}`);
+      return dateA - dateB;
+    });
 
     res.status(200).json(previousAppointments);
   } catch (error) {
