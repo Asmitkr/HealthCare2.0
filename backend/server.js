@@ -28,11 +28,7 @@ app.use("/api/appointment", appointmentroutesDoctor);
 app.use("/api/doctors", doctorsroutes);
 app.use("/api/companies", companiesroutes);
 app.use("/api/users", userroutes);
-
 app.use("/api/insurancePlans", insurancePlansroutes);
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

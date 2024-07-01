@@ -85,10 +85,12 @@ export const CompanyInsurance = async (req, res) => {
     if (!req.company) {
       return res.status(400).json({ error: "Not a Valid Company" });
     }
-    const insurs = await Insurance.find({ companyid: req.company._id });
+    // Fetch only insurances with status "Accepted"
+    const insurs = await Insurance.find({
+      companyid: req.company._id,
+      status: ["Approved", "Rejected"],
+    });
     if (insurs.length != 0) {
-      const insurs = await Insurance.find({ companyid: req.company._id });
-
       const insursWithUserNames = await Promise.all(
         insurs.map(async (insur) => {
           const user = await User.findById(insur.userid);
@@ -104,10 +106,41 @@ export const CompanyInsurance = async (req, res) => {
     } else {
       res
         .status(202)
-        .json({ message: "No records are available for thiss company" });
+        .json({ message: "No records are available for this company" });
     }
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const pendingInsurance = async (req, res) => {
+  try {
+    const companyid = req.company._id;
+
+    const pendingRequests = await Insurance.find({
+      companyid: companyid,
+      status: "Pending",
+    }).populate("userid", "-password");
+    if (!pendingRequests || pendingRequests.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No valid pending requests found" });
+    }
+
+    pendingRequests.sort((a, b) => {
+      const dateA = new Date(
+        `${a.date.split("-").reverse().join("-")}T${a.time}`
+      );
+      const dateB = new Date(
+        `${b.date.split("-").reverse().join("-")}T${b.time}`
+      );
+      return dateA - dateB;
+    });
+
+    res.status(200).json(pendingRequests);
+  } catch (error) {
+    console.log("Error in Pending request", error.message);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -122,7 +155,6 @@ export const ReplyInsurance = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid insurance record ID." });
     }
-    // Find insurance record by _id
     const insuranceRecord = await Insurance.findOne({ _id: _id });
 
     if (!insuranceRecord) {
@@ -235,6 +267,7 @@ export const ReplyClaim = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 function isValidDate(dateString) {
   // Check if the date string matches the format dd-mm-yyyy
   var regex = /^(\d{2})-(\d{2})-(\d{4})$/;

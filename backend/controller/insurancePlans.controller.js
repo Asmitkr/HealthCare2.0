@@ -15,7 +15,7 @@ export const AddPlan = async (req, res) => {
     }
 
     const newinsurancePlan = new InsurancePlans({
-      companyname:req.company.fullName,
+      companyname: req.company.fullName,
       companyid: req.company._id,
       duration,
       amount,
@@ -26,7 +26,7 @@ export const AddPlan = async (req, res) => {
 
       res.status(201).json({
         _id: newinsurancePlan._id,
-        company:req.company.fullName,
+        company: req.company.fullName,
         amount: newinsurancePlan.amount,
         duration: newinsurancePlan.duration,
       });
@@ -40,27 +40,22 @@ export const AddPlan = async (req, res) => {
 
 export const SearchPlan = async (req, res) => {
   try {
-    if (!req.user && !req.company) {
-      return res.status(400).json({ error: "Not Valid User" });
-    }
-    const { companyid } = req.body;
+    // Assuming req.user.companyid holds the company ID of the logged-in user
+    // console.log(req.company._id);
+    const companyid = req.company._id;
 
-    if (companyid) {
-      const Plans = await InsurancePlans.find({ companyid: companyid });
-      if (!Plans) {
-        res.status(404).json({ message: "No plan data for this company" });
-      } else {
-        res.status(201).json(Plans);
-      }
+    if (!companyid) {
+      return res.status(400).json({ error: "Not Valid User or Company" });
+    }
+
+    const Plans = await InsurancePlans.find({ companyid: companyid });
+
+    if (!Plans || Plans.length === 0) {
+      return res.status(404).json({ message: "No plan data for this company" });
     } else {
-      const Plans = await InsurancePlans.find();
-      if (!Plans) {
-        res.status(404).json({ message: "No plan data available" });
-      } else {
-        res.status(201).json(Plans);
-      }
+      return res.status(200).json(Plans);
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };

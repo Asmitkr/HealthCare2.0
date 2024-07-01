@@ -8,22 +8,25 @@ import {
   CompanyInsurance,
   ApplyClaim,
   ReplyClaim,
+  pendingInsurance,
 } from "../controller/insurance.controller.js";
 import {
   AddPlan,
   SearchPlan,
 } from "../controller/insurancePlans.controller.js";
+import { PendingRequest } from "../controller/appointment.doctor.controller.js";
 
 const router = express.Router();
 
 router.post("/ApplyInsurance", [isAuth], ApplyInsurance);
 router.get("/CurrentInsurance", [isAuth], CurrentInsurance);
 router.post("/ReplyInsurance", [isAuth], ReplyInsurance);
-router.post("/CompanyInsurance", [isAuth], CompanyInsurance);
+router.get("/CompanyInsurance", [isAuth], CompanyInsurance);
 router.post("/ApplyClaim", [isAuth], ApplyClaim);
 router.post("/ReplyClaim", [isAuth], ReplyClaim);
+router.get("/PendingInsurance", [isAuth], pendingInsurance);
 
 router.post("/AddPlan", [isAuth], AddPlan);
-router.post("/SearchPlan", [isAuth], SearchPlan);
+router.get("/SearchPlan", [isAuth], SearchPlan);
 
 export default router;
