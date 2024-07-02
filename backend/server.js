@@ -11,6 +11,7 @@ import doctorsroutes from "./routes/doctors.routes.js";
 import companiesroutes from "./routes/companies.routes.js";
 import insurancePlansroutes from "./routes/insurancePlans.routes.js";
 import userroutes from "./routes/user.routes.js";
+import messageroutes from "./routes/message.routes.js"
 
 import connectToMongoDB from "./db/connectToMongodb.js";
 
@@ -29,6 +30,7 @@ app.use("/api/doctors", doctorsroutes);
 app.use("/api/companies", companiesroutes);
 app.use("/api/users", userroutes);
 app.use("/api/insurancePlans", insurancePlansroutes);
+app.use("/api/messages",messageroutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
