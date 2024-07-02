@@ -75,7 +75,6 @@ export const CurrentInsurance = async (req, res) => {
       res.status(202);
     }
   } catch (error) {
-    console.log("xxx");
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -139,7 +138,6 @@ export const pendingInsurance = async (req, res) => {
 
     res.status(200).json(pendingRequests);
   } catch (error) {
-    console.log("Error in Pending request", error.message);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -191,14 +189,11 @@ export const ApplyClaim = async (req, res) => {
     }
 
     const { _id, description } = req.body;
-
-    console.log(_id, description);
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid insurance record ID." });
     }
     // Find insurance record by _id
     const insuranceRecord = await Insurance.findOne({ _id: _id });
-    console.log(insuranceRecord);
     if (!insuranceRecord || insuranceRecord.status != "Approved") {
       return res
         .status(404)

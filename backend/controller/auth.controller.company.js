@@ -49,7 +49,6 @@ export const signupComp = async (req, res) => {
       res.status(400).json({ error: "Invalid Company Data" });
     }
   } catch (error) {
-    console.log("Error in company Signup controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -57,7 +56,6 @@ export const signupComp = async (req, res) => {
 export const signinComp = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email);
     if (!isValidEmail(email)) {
       return res.status(400).json({ error: "Email Not Valid" });
     }
@@ -82,7 +80,6 @@ export const signinComp = async (req, res) => {
       // accessToken:token
     });
   } catch (error) {
-    console.log("Error in Company Login controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -92,7 +89,6 @@ export const logoutComp = (req, res) => {
     res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged Out Successfully" });
   } catch (error) {
-    console.log("Error in logout controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
