@@ -8,7 +8,7 @@ export const AddPlan = async (req, res) => {
     if (!req.company) {
       return res.status(400).json({ error: "Not Valid Company" });
     }
-    const { duration, amount } = req.body;
+    const { duration, amount, type } = req.body;
 
     if (amount <= 0) {
       return res.status(400).json({ error: "Amount is not valid" });
@@ -19,6 +19,7 @@ export const AddPlan = async (req, res) => {
       companyid: req.company._id,
       duration,
       amount,
+      type,
     });
 
     if (newinsurancePlan) {
@@ -29,6 +30,7 @@ export const AddPlan = async (req, res) => {
         company: req.company.fullName,
         amount: newinsurancePlan.amount,
         duration: newinsurancePlan.duration,
+        type: newinsurancePlan.type,
       });
     } else {
       res.status(400).json({ error: "Invalid Plan Data" });

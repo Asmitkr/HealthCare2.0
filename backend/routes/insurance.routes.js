@@ -9,6 +9,7 @@ import {
   ApplyClaim,
   ReplyClaim,
   pendingInsurance,
+  getClaim,
 } from "../controller/insurance.controller.js";
 import {
   AddPlan,
@@ -25,6 +26,7 @@ router.get("/CompanyInsurance", [isAuth], CompanyInsurance);
 router.post("/ApplyClaim", [isAuth], ApplyClaim);
 router.post("/ReplyClaim", [isAuth], ReplyClaim);
 router.get("/PendingInsurance", [isAuth], pendingInsurance);
+router.get("/getClaim", [isAuth], getClaim);
 
 router.post("/AddPlan", [isAuth], AddPlan);
 router.get("/SearchPlan", [isAuth], SearchPlan);

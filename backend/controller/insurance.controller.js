@@ -126,18 +126,10 @@ export const pendingInsurance = async (req, res) => {
         .json({ message: "No valid pending requests found" });
     }
 
-    pendingRequests.sort((a, b) => {
-      const dateA = new Date(
-        `${a.date.split("-").reverse().join("-")}T${a.time}`
-      );
-      const dateB = new Date(
-        `${b.date.split("-").reverse().join("-")}T${b.time}`
-      );
-      return dateA - dateB;
-    });
-
+    // console.log("Pending Requests:", pendingRequests);
     res.status(200).json(pendingRequests);
   } catch (error) {
+    console.log("error", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -222,6 +214,37 @@ export const ApplyClaim = async (req, res) => {
   }
 };
 
+export const getClaim = async (req, res) => {
+  try {
+    const companyid = req.company._id;
+
+    const pendingClaim = await Insurance.find({
+      companyid: companyid,
+      status: "Approved",
+      claimRequest: "Applied",
+    }).populate("userid", "-password");
+    if (!pendingClaim || pendingClaim.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No valid pending requests found" });
+    }
+
+    pendingClaim.sort((a, b) => {
+      const dateA = new Date(
+        `${a.date.split("-").reverse().join("-")}T${a.time}`
+      );
+      const dateB = new Date(
+        `${b.date.split("-").reverse().join("-")}T${b.time}`
+      );
+      return dateA - dateB;
+    });
+
+    res.status(200).json(pendingClaim);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const ReplyClaim = async (req, res) => {
   try {
     if (!req.company) {
@@ -230,6 +253,7 @@ export const ReplyClaim = async (req, res) => {
 
     const { _id, claimReply } = req.body;
 
+    console.log(_id, claimReply);
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res.status(400).json({ error: "Invalid insurance record ID." });
     }

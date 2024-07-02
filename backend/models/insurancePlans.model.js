@@ -21,7 +21,6 @@ const insuranceplanSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    default: "insurance needed",
   },
 });
 
