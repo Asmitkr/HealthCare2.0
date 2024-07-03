@@ -7,7 +7,21 @@ const ApprovedInsuranceCompany = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="mt-2 w-full bg-blue-300 rounded-lg p-1 text-black">
+    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
+      <div className="relative flex mb-2">
+        <div>Username</div>
+        <a className="absolute right-0" href="/">
+          Logout
+        </a>
+      </div><div className="flex mt-2">
+      <div className="rounded-md mr-3 p-2 min-h-screen  bg-blue-500 flex flex-col">
+        <a href="/addplans">Add Plans</a>
+        <a href="/getplans">Get Plans</a>
+        <a href="/approvedinsurance">Approved Insurances</a>
+        <a href="/claimrequest">Claim Request</a>
+        <a href="/pendingrequestcomp">Pending Request</a>
+      </div>
+       <div className=" w-1/2 bg-blue-300 rounded-lg p-1 text-black">
       <p className="text-xl mb-2">Approved Insurances</p>
       {approvedInsu.length > 0 ? (
         <div className="overflow-auto">
@@ -42,7 +56,8 @@ const ApprovedInsuranceCompany = () => {
         </div>
       ) : (
         <p>No approved insurances found.</p>
-      )}
+      )}</div>
+    </div>
     </div>
   );
 };

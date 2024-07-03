@@ -6,7 +6,8 @@ import ClaimRequestsComp from "./ClaimRequestsComp";
 
 const Companyhome = () => {
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
+    <ApprovedInsuranceCompany />
+    /*<div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
       <div className="relative flex">
         <div>Company name</div>
         <a className="absolute right-0" href="/">
@@ -21,7 +22,7 @@ const Companyhome = () => {
         </div>
         <PendingRequestComp />
       </div>
-    </div>
+    </div>*/
   );
 };
 

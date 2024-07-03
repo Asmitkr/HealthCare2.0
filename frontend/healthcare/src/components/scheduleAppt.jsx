@@ -37,16 +37,28 @@ const ScheduleAppt = () => {
     await scheduleAppt(data);
   };
   return (
-    <div className="mt-2 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
-      <p className="text-xl">Schedule Appointment</p>
+    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
+      <div className="relative flex mb-2">
+        <div>Username</div>
+        <a className="absolute right-0" href="/">
+          Logout
+        </a>
+      </div><div className="flex mt-2">
+      <div className="rounded-md p-2 mr-4 min-h-screen  bg-blue-500 flex flex-col">
+        <a href="/currentappt">Current Appointment</a>
+        <a href="/currentinsurance">Current Insurance</a>
+        <a href="/scheduleappt">Schedule Appointment</a>
+        <a href="/applyinsurance">Apply for Insurance</a>
+      </div>
+    <div className="w-1/2 bg-blue-300 min-h-screen rounded-lg p-1 text-black">
+      <p className="text-xl mb-2">Schedule Appointment</p>
       <SearchDoctors />
-
-      <div className="mt-2 w-full bg-blue-300 h-full rounded-lg p-4 text-black">
+      <div className="mt-2 w-full bg-blue-300 rounded-lg p-4 text-black">
         <h2 className="text-2xl font-bold mb-4">Doctor's Details</h2>
         {doctorInfo && doctorInfo.length > 0 ? (
-          <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+          <div style={{ maxHeight: "100vh", overflowY: "auto" }}>
             {doctorInfo.map((doctor, index) => (
-              <div key={index} className="space-y-2 mb-4 border-b pb-4">
+              <div key={index} className="border-2 p-1 mr-2 space-y-2 mb-4 border-b pb-4">
                 <p>
                   <strong>Full Name:</strong> {doctor.fullName}
                 </p>
@@ -118,7 +130,8 @@ const ScheduleAppt = () => {
             </button>
           </form>
         </div>
-      )}
+      )}</div>
+      </div>
     </div>
   );
 };

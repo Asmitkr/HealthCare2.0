@@ -34,9 +34,23 @@ const AddPlans = () => {
     }
   };
   return (
-    <div className="flex gap-4 h-1/2">
+    <div className="p-5 bg-zinc-900  min-h-screen text-white">
+      <div className="relative flex mb-2">
+        <div>Username</div>
+        <a className="absolute right-0" href="/">
+          Logout
+        </a>
+      </div><div className="flex mt-2">
+      <div className="rounded-md mr-3 p-2  min-h-screen  bg-blue-500 flex flex-col">
+        <a href="/addplans">Add Plans</a>
+        <a href="/getplans">Get Plans</a>
+        <a href="/approvedinsurance">Approved Insurances</a>
+        <a href="/claimrequest">Claim Request</a>
+        <a href="/pendingrequestcomp">Pending Request</a>
+      </div>
+      <div className="flex gap-4 h-1/2">
       <form
-        className="mt-2 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black"
+        className=" bg-blue-300 h-full rounded-lg p-1 text-black"
         onSubmit={handleSubmit}
       >
         <p className="text-xl mb-2">Add Plans</p>
@@ -74,7 +88,7 @@ const AddPlans = () => {
           </button>
         </div>
       </form>
-      <GetPlans />
+    </div></div>
     </div>
   );
 };

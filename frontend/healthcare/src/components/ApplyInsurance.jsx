@@ -38,16 +38,29 @@ const ApplyInsurance = () => {
   };
 
   return (
-    <div className="mt-2 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
-      <p className="text-xl">Apply For Insurance</p>
+    <div className=" p-5 bg-zinc-900 min-h-screen  text-white">
+      <div className="relative flex mb-2">
+        <div>Username</div>
+        <a className="absolute right-0" href="/">
+          Logout
+        </a>
+      </div><div className="flex mt-4">
+      <div className="rounded-md mr-5 p-2 min-h-screen  bg-blue-500 flex flex-col">
+        <a href="/currentappt">Current Appointment</a>
+        <a href="/currentinsurance">Current Insurance</a>
+        <a href="/scheduleappt">Schedule Appointment</a>
+        <a href="/applyinsurance">Apply for Insurance</a>
+      </div>
+    <div className="w-1/2 bg-blue-300 min-h-screen rounded-lg p-1 text-black">
+      <p className="text-xl mb-2">Apply For Insurance</p>
       <SearchCompanies />
 
-      <div className="mt-2 w-full bg-blue-300 h-full rounded-lg p-4 text-black">
+      <div className="mt-2 w-full bg-blue-300  rounded-lg p-4 text-black">
         <h2 className="text-2xl font-bold mb-4">Company and their plans</h2>
         {companyInfo && companyInfo.length > 0 ? (
           <div
             style={{
-              maxHeight: "300px",
+              height: "100vh",
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
@@ -77,7 +90,7 @@ const ApplyInsurance = () => {
                   {company.plans &&
                     Array.isArray(company.plans) &&
                     company.plans.map((plan, planIndex) => (
-                      <div key={planIndex} className="min-w-max p-2">
+                      <div key={planIndex} className="min-w-max p-2 border-2 rounded mr-1">
                         <p>
                           Plan {planIndex + 1}: {plan.type}
                         </p>
@@ -141,6 +154,8 @@ const ApplyInsurance = () => {
           </form>
         </div>
       )}
+      </div>
+      </div>
     </div>
   );
 };
