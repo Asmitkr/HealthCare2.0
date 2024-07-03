@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import useUserInfo from "../../zustand/useUserInfo";
 import useGetUsers from "../hooks/useGetUsers";
 import useGetPrevAppt from "../hooks/useGetPreviousAppts";
+import useConversation from "../../zustand/useConversation";
+import MessageContainer from "./MessageContainerDoc";
 
 const PreviousReq = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +15,8 @@ const PreviousReq = () => {
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [selectedPatientName, setSelectedPatientName] = useState("");
   const [loadingPrevAppts, setLoadingPrevAppts] = useState(false);
+  const { setSelectedConversation } = useConversation();
+  const [showMessageContainer, setShowMessageContainer] = useState(false); // State to control visibility of MessageContainer
 
   useEffect(() => {
     if (searchTerm.trim() !== "" && !selectedPatientId) {
@@ -67,6 +71,12 @@ const PreviousReq = () => {
     setSearchTerm(e.target.value);
     setSelectedPatientId(null);
     setSelectedPatientName("");
+    setShowMessageContainer(false); // Hide the MessageContainer when searching again
+  };
+
+  const handleOpenChat = (user) => {
+    setSelectedConversation(user); // Set the selected conversation to the user object
+    setShowMessageContainer(true); // Show the MessageContainer
   };
 
   return (
@@ -86,22 +96,34 @@ const PreviousReq = () => {
           <p>Loading...</p>
         ) : filteredUsers.length > 0 && !selectedPatientId ? (
           filteredUsers.map((user, index) => (
-            <div key={index} className="border-b border-white py-2">
+            <div
+              key={index}
+              className="border-b border-white py-2 flex justify-between items-center"
+            >
+              <div>
+                <button
+                  onClick={() => handleFullNameClick(user._id, user.fullName)}
+                  className="text-left font-bold"
+                >
+                  Full Name: {user.fullName}
+                </button>
+                <p>Age: {user.age}</p>
+                <p>Phone: {user.phone}</p>
+                <p>Address: {user.address}</p>
+              </div>
               <button
-                onClick={() => handleFullNameClick(user._id, user.fullName)}
-                className="text-left font-bold"
+                onClick={() => handleOpenChat(user)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                Full Name: {user.fullName}
+                Chat
               </button>
-              <p>Age: {user.age}</p>
-              <p>Phone: {user.phone}</p>
-              <p>Address: {user.address}</p>
             </div>
           ))
         ) : !selectedPatientId ? (
           <p>No users found.</p>
         ) : null}
       </div>
+      {showMessageContainer && <MessageContainer />}
       {selectedPatientId && (
         <div className="mt-4 w-3/4 bg-blue-300 h-full rounded-lg p-4 text-black">
           {loadingPrevAppts ? (
