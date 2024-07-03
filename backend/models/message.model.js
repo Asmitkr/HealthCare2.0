@@ -3,22 +3,18 @@ import mongoose from "mongoose";
 const messageSchema = new mongoose.Schema({
     senderId: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: 'senderModel',
-        required: true
+        refPath: 'senderModel'
     },
     senderModel: {
         type: String,
-        required: true,
         enum: ['User', 'Doctor']
     },
     receiverId: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: 'receiverModel',
-        required: true
+        refPath: 'receiverModel'
     },
     receiverModel: {
         type: String,
-        required: true,
         enum: ['User', 'Doctor']
     },
     message: {
@@ -30,36 +26,3 @@ const messageSchema = new mongoose.Schema({
 const Message = mongoose.model("Message", messageSchema);
 
 export default Message;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

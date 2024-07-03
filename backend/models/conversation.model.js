@@ -18,7 +18,7 @@ const conversationSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
-//conversationSchema.index({ "participants.participantId": 1, "participants.participantModel": 1 }, { unique: true });
+
 
 const Conversation = mongoose.model("Conversation", conversationSchema);
 
