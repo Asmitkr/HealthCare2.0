@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import UpcomingApptDoc from "./UpcomingApptDoc";
 import PendingReqDoc from "./PendingReqDoc";
 import PreviousReq from "./PreviousReq";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 const Doctorhome = () => {
   const [currentView, setCurrentView] = useState("PendingRequests");
-
+  const { authUser } = useContext(AuthContext);
   return (
     <div
       className="p-5 w-full min-h-screen text-white flex flex-col bg-cover bg-center"
@@ -14,7 +16,7 @@ const Doctorhome = () => {
       }}
     >
       <div className="relative flex mb-4">
-        <div>Dr. name</div>
+        <div>{authUser ? authUser.fullName : "Username"}</div>
         <a className="absolute right-0" href="/">
           Logout
         </a>
