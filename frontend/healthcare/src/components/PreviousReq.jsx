@@ -71,7 +71,7 @@ const PreviousReq = () => {
 
   return (
     <div className="flex items-center justify-center h-1/2 w-full">
-      <div className="mt-4 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
+      <div className="mt-4 w-1/2 bg-blue-700 h-full rounded-lg p-1 text-black">
         <p className="text-xl">Previous Appointments</p>
         <div className="flex gap-2 mt-2">
           <input
