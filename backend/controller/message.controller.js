@@ -120,13 +120,7 @@ export const getmessage = async (req, res) => {
                     ]
                 }
             ]
-        }).populate({
-            path: 'messages',
-            populate: [
-                { path: 'senderId', model: senderModel },
-                { path: 'receiverId', model: receiverModel }
-            ]
-        });
+        }).populate("messages");
 
         if (!conversation) return res.status(200).json([]);
 
