@@ -137,7 +137,7 @@ export const PreviousAppointment = async (req, res) => {
       (request) => !compareDateTime(request.date, request.time)
     );
 
-    console.log("Previous Appointments: ", previousAppointments);
+   // console.log("Previous Appointments: ", previousAppointments);
     previousAppointments.sort((a, b) => {
       const dateA = new Date(`${a.date.split("-").reverse().join("-")}T${a.time}`);
       const dateB = new Date(`${b.date.split("-").reverse().join("-")}T${b.time}`);

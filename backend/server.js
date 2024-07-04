@@ -13,10 +13,12 @@ import insurancePlansroutes from "./routes/insurancePlans.routes.js";
 import userroutes from "./routes/user.routes.js";
 import messageroutes from "./routes/message.routes.js"
 
+import { app, server } from "./socket/socket.js";
+
 import connectToMongoDB from "./db/connectToMongodb.js";
 
 dotenv.config();
-const app = express();
+//const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
@@ -32,8 +34,7 @@ app.use("/api/users", userroutes);
 app.use("/api/insurancePlans", insurancePlansroutes);
 app.use("/api/messages",messageroutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  connectToMongoDB();
-  console.log(`Server started at port no. : ${PORT}`);
+server.listen(PORT, () => {
+	connectToMongoDB();
+	console.log(`Server Running on port ${PORT}`);
 });

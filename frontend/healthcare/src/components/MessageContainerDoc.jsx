@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect } from "react";
 import Messages from "./Messages";
 import MessageInput from "./MessageInput";

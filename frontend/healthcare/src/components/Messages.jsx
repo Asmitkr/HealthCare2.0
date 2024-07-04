@@ -1,12 +1,13 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useRef } from "react";
 import Message from "./Message";
 import useGetMessages from "../hooks/useGetMessages";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
-// import useListenMessages from "../../hooks/useListenMessages";
+ import useListenMessages from "../hooks/useListenMessages";
 
 const Messages = () => {
   const { messages, loading } = useGetMessages();
-  //   useListenMessages();
+     useListenMessages();
   console.log("messages.jsx -> data", messages);
   const lastMessageRef = useRef();
 

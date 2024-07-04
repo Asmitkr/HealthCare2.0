@@ -2,7 +2,7 @@ import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 import Doctor from "../models/doctor.model.js";
-// import { getReceiverSocketId, io } from "../socket/socket.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendmessage = async (req, res) => {
     try {
@@ -69,10 +69,10 @@ export const sendmessage = async (req, res) => {
 
         await Promise.all([conversation.save(), newMsg.save()]);
 
-        // const receiverSocketId = getReceiverSocketId(receiverId);
-        // if (receiverSocketId) {
-        //     io.to(receiverSocketId).emit("newMessage", newMsg);
-        // }
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMsg);
+        }
 
         res.status(200).json(newMsg);
 
