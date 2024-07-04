@@ -15,6 +15,7 @@
     "date-fns": "^3.6.0",
     "flowbite": "^2.3.0",
     "gsap": "^3.12.5",
+    "healthcare2.0": "file:../..",
     "react": "^18.3.1",
     "react-datepicker": "^7.1.0",
     "react-day-picker": "^8.10.1",

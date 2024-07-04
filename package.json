@@ -16,7 +16,8 @@
   "main": "server.js",
   "scripts": {
     "server": "nodemon backend/server.js",
-    "start": "nodemon backend/server.js"
+    "start": "node backend/server.js",
+    "build": "npm install && npm install --prefix frontend/healthcare && npm run build --prefix frontend/healthcare"
   },
   "type": "module",
   "author": "",
