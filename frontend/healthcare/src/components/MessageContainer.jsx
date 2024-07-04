@@ -17,7 +17,14 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="md:min-w-[450px] flex flex-col border border-red-500 h-full">
+    <div
+      className="md:min-w-[350px] flex flex-col border border-red-500"
+      style={{
+        minWidth: "300px",
+        height: "80vh", // Fixed height
+        maxWidth: "100%",
+      }}
+    >
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
@@ -38,7 +45,7 @@ const MessageContainer = () => {
             </button>
           </div>
 
-          {/* Messages list with flex-grow to take available space */}
+          {/* Messages list with fixed height and scrollbar */}
           <div className="flex-1 overflow-auto">
             <Messages />
           </div>

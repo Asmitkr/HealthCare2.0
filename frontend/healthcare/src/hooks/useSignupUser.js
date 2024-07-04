@@ -27,7 +27,7 @@ const useSignupUser = () => {
       age,
       phone,
     });
-    if (!success) return;
+    if (!success) return false;
 
     setLoading(true);
 
@@ -54,8 +54,10 @@ const useSignupUser = () => {
 
       localStorage.setItem("common-user", JSON.stringify(data));
       setAuthUser(data);
+      return true;
     } catch (error) {
       toast.error(error.message);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,7 @@ function handleInputError({
     return false;
   }
 
-  if (password != confirmPassword) {
+  if (password !== confirmPassword) {
     toast.error("Passwords do not match");
     return false;
   }

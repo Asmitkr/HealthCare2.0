@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import image from "../assets/login.jpg";
-import { useState } from "react";
 import useSignupUser from "../hooks/useSignupUser";
 import { useNavigate } from "react-router-dom";
 
@@ -15,29 +14,52 @@ const Signup_user = () => {
     age: "",
     phone: "",
   });
+  const [error, setError] = useState(""); // State to handle error messages
   const navigate = useNavigate();
   const { loading, signupUser } = useSignupUser();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let updatedInputs = { ...inputs };
-    await signupUser(updatedInputs);
-    navigate("/userhome");
+    // Check if all fields are filled
+    if (
+      !inputs.fullName ||
+      !inputs.email ||
+      !inputs.password ||
+      !inputs.confirmPassword ||
+      !inputs.gender ||
+      !inputs.address ||
+      !inputs.age ||
+      !inputs.phone
+    ) {
+      setError("All fields are required."); // Set error message
+      return; // Prevent further execution
+    }
+
+    try {
+      const success = await signupUser(inputs); // Wait for signupUser to complete and get success status
+      if (success) {
+        navigate("/userhome"); // Navigate only after signupUser has completed successfully
+      } else {
+        setError("Signup failed. Please try again."); // Set error message if signupUser fails
+      }
+    } catch (error) {
+      console.error("Signup failed:", error);
+      setError("Signup failed. Please try again."); // Optionally handle signup error
+    }
   };
 
   return (
     <div>
       <div className="py-20 px-20 flex justify-center w-full h-screen bg-zinc-900">
         <div
-          className="relative flex flex-col justify-center  w-full rounded-lg"
+          className="relative flex flex-col justify-center w-full rounded-lg"
           style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}
         >
           <div className="absolute right-12">
-            <h1 className=" text-2xl mb-3">Register as a User</h1>
-            <form
-              className=" flex flex-col h-1/2"
-              action=""
-              onSubmit={handleSubmit}
-            >
+            <h1 className="text-2xl mb-3">Register as a User</h1>
+            {error && <p className="text-red-500">{error}</p>}{" "}
+            {/* Display error message */}
+            <form className="flex flex-col h-1/2" onSubmit={handleSubmit}>
               <input
                 className="placeholder:text-zinc-500 bg-transparent w-72 mb-3 outline-none rounded"
                 type="text"
@@ -94,7 +116,7 @@ const Signup_user = () => {
               />
               <input
                 className="placeholder:text-zinc-500 bg-transparent w-72 mb-3 outline-none rounded"
-                type="Number"
+                type="number"
                 placeholder="Age"
                 value={inputs.age}
                 onChange={(e) => SetInputs({ ...inputs, age: e.target.value })}
@@ -108,25 +130,16 @@ const Signup_user = () => {
                   SetInputs({ ...inputs, phone: e.target.value })
                 }
               />
-              <div>
-                <button href='/userhome'
-                  className="btn btn-block btn-sm mt-2 border border-slate-700 bg-green-500 w-72 outline-none rounded mt-3 border"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <span className="loading loading-spinner"></span>
-                  ) : (
-                    "Sign Up"
-                  )}
-                </button>
-              </div>
-              {/* <input
-                className="placeholder:text-zinc-500 bg-green-500 w-72 outline-none rounded mt-3"
-                type="submit"
-                value="Sign Up"
-              /> */}
+              <button
+                className="btn btn-block btn-sm border-slate-700 bg-green-500 w-72 outline-none rounded mt-3 border"
+                disabled={loading}
+              >
+                {loading ? "Signing Up..." : "Sign Up"}
+              </button>
             </form>
-            <a className="absolute right-0 text-blue-500 mt-3" href="/">Already have an account?</a>
+            <a className="absolute right-0 text-blue-500 mt-3" href="/">
+              Already have an account?
+            </a>
           </div>
         </div>
       </div>

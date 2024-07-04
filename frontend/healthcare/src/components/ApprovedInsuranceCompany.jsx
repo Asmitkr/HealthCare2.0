@@ -1,23 +1,34 @@
 import React from "react";
 import useGetApprovedInsuComp from "../hooks/useGetApprovedInsuComp";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import image from "../assets/bg.webp";
+import useLogoutComp from "../hooks/useLogoutComp";
 
 const ApprovedInsuranceCompany = () => {
   const { loading, approvedInsu } = useGetApprovedInsuComp();
   const { authUser } = useContext(AuthContext);
+  const { logout } = useLogoutComp();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white"
-    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
+    <div
+      className="p-5 bg-zinc-900 w-full min-h-screen text-white"
+      style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}
+    >
       <div className="relative flex mb-2">
         <div>{authUser ? authUser.fullName : "Username"}</div>
-        <a className="absolute right-0" href="/">
+        <button className="absolute right-0" onClick={handleLogout}>
           Logout
-        </a>
+        </button>
       </div>
       <div className="flex mt-2">
         <div className="rounded-md mr-3 p-2 min-h-screen  bg-blue-500 flex flex-col">

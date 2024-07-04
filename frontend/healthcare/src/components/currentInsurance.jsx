@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import useGetInsurance from "../hooks/useGetInsurance";
 import useApplyClaim from "../hooks/useApplyClaim";
 import image from "../assets/bg.webp";
+import { AuthContext } from "../context/AuthContext";
+import useLogoutUser from "../hooks/useLogoutUser";
 
 const InsuranceRow = ({
   ins,
@@ -61,6 +64,14 @@ const CurrentInsurance = () => {
   const { loading: loadingClaim, applyClaim } = useApplyClaim();
   const [showDescriptionBox, setShowDescriptionBox] = useState(null);
   const [description, setDescription] = useState("");
+  const { authUser } = useContext(AuthContext);
+  const { logout } = useLogoutUser();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const handleApplyClaim = async (insId) => {
     await applyClaim({ _id: insId, description });
@@ -69,58 +80,61 @@ const CurrentInsurance = () => {
   };
 
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white"
-    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
+    <div
+      className="p-5 bg-zinc-900 w-full min-h-screen text-white"
+      style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}
+    >
       <div className="relative flex mb-2">
-        <div>Username</div>
-        <a className="absolute right-0" href="/">
+        <div>{authUser ? authUser.fullName : "Username"}</div>
+        <button className="absolute right-0" onClick={handleLogout}>
           Logout
-        </a>
-      </div><div className="flex mt-2">
-      <div className="rounded-md p-2  min-h-screen  bg-blue-500 flex flex-col">
-        <a href="/currentappt">Current Appointment</a>
-        <a href="/currentinsurance">Current Insurance</a>
-        <a href="/scheduleappt">Schedule Appointment</a>
-        <a href="/applyinsurance">Apply for Insurance</a>
+        </button>
       </div>
-    <div className="ml-4 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
-      <p className="text-xl">Current Insurance</p>
-      {loadingInsurance ? (
-        <p>Loading insurance...</p>
-      ) : insurance.length > 0 ? (
-        <table className="table-auto w-full border-2 p-1">
-          <thead>
-            <tr>
-              <th className="text-left">Company's Name</th>
-              <th className="text-left">Plan id</th>
-              <th className="text-left">Start Date</th>
-              <th className="text-left">End Date</th>
-              <th className="text-left">Amount</th>
-              <th className="text-left">Status</th>
-              <th className="text-left">Claim Status</th>
-              <th className="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="border">
-            {insurance.map((ins) => (
-              <InsuranceRow
-                key={ins.id}
-                ins={ins}
-                showDescriptionBox={showDescriptionBox}
-                setShowDescriptionBox={setShowDescriptionBox}
-                description={description}
-                setDescription={setDescription}
-                handleApplyClaim={handleApplyClaim}
-                loadingClaim={loadingClaim}
-              />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No insurance found.</p>
-      )}
-    </div>
-    </div>
+      <div className="flex mt-2">
+        <div className="rounded-md p-2  min-h-screen  bg-blue-500 flex flex-col">
+          <a href="/currentappt">Current Appointment</a>
+          <a href="/currentinsurance">Current Insurance</a>
+          <a href="/scheduleappt">Schedule Appointment</a>
+          <a href="/applyinsurance">Apply for Insurance</a>
+        </div>
+        <div className="ml-4 w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
+          <p className="text-xl">Current Insurance</p>
+          {loadingInsurance ? (
+            <p>Loading insurance...</p>
+          ) : insurance.length > 0 ? (
+            <table className="table-auto w-full border-2 p-1">
+              <thead>
+                <tr>
+                  <th className="text-left">Company's Name</th>
+                  <th className="text-left">Plan id</th>
+                  <th className="text-left">Start Date</th>
+                  <th className="text-left">End Date</th>
+                  <th className="text-left">Amount</th>
+                  <th className="text-left">Status</th>
+                  <th className="text-left">Claim Status</th>
+                  <th className="text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="border">
+                {insurance.map((ins) => (
+                  <InsuranceRow
+                    key={ins.id}
+                    ins={ins}
+                    showDescriptionBox={showDescriptionBox}
+                    setShowDescriptionBox={setShowDescriptionBox}
+                    description={description}
+                    setDescription={setDescription}
+                    handleApplyClaim={handleApplyClaim}
+                    loadingClaim={loadingClaim}
+                  />
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No insurance found.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

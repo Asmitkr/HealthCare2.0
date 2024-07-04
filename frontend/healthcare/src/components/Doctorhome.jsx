@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import UpcomingApptDoc from "./UpcomingApptDoc";
 import PendingReqDoc from "./PendingReqDoc";
 import PreviousReq from "./PreviousReq";
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
 import image from "../assets/bg.webp";
+import useLogoutDoc from "../hooks/useLogoutDoc";
 
 const Doctorhome = () => {
   const [currentView, setCurrentView] = useState("PendingRequests");
   const { authUser } = useContext(AuthContext);
+  const { logout } = useLogoutDoc(); // Destructure logout function from useLogoutDoc hook
+  const navigate = useNavigate(); // Call useNavigate to get the navigate function
+
+  const handleLogout = async () => {
+    await logout(); // Call logout function
+    navigate("/"); // Navigate to home page after logout
+  };
+
   return (
     <div
       className="p-5 w-full min-h-screen text-white flex flex-col bg-cover bg-center"
@@ -16,9 +25,9 @@ const Doctorhome = () => {
     >
       <div className="relative flex mb-4">
         <div>{authUser ? authUser.fullName : "Username"}</div>
-        <a className="absolute right-0" href="/">
+        <button className="absolute right-0" onClick={handleLogout}>
           Logout
-        </a>
+        </button>
       </div>
       <div className="flex flex-1 gap-4">
         {/* Left side with buttons */}

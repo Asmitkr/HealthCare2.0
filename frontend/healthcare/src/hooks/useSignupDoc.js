@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const useSignupDoc = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,6 @@ const useSignupDoc = () => {
     type,
     phone,
   }) => {
-    console.log(fullName, email, password, confirmPassword);
     const success = handleInputError({
       fullName,
       email,
@@ -29,7 +28,7 @@ const useSignupDoc = () => {
       type,
       phone,
     });
-    if (!success) return;
+    if (!success) return { success: false, error: "Validation failed" };
 
     setLoading(true);
 
@@ -57,14 +56,16 @@ const useSignupDoc = () => {
 
       localStorage.setItem("common-user", JSON.stringify(data));
       setAuthUser(data);
+      return { success: true, data };
     } catch (error) {
       toast.error(error.message);
+      return { success: false, error: error.message };
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, signupDoc };
+  return { signupDoc, loading };
 };
 
 export default useSignupDoc;
@@ -91,12 +92,11 @@ function handleInputError({
     !phone ||
     !type
   ) {
-    console.log("check");
     toast.error("Please fill all the fields");
     return false;
   }
 
-  if (password != confirmPassword) {
+  if (password !== confirmPassword) {
     toast.error("Passwords do not match");
     return false;
   }

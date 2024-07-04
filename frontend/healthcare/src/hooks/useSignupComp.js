@@ -14,7 +14,6 @@ const useSignupComp = () => {
     address,
     phone,
   }) => {
-    console.log(fullName, email, password, confirmPassword);
     const success = handleInputError({
       fullName,
       email,
@@ -23,7 +22,7 @@ const useSignupComp = () => {
       address,
       phone,
     });
-    if (!success) return;
+    if (!success) return { success: false, error: "Validation failed" };
 
     setLoading(true);
 
@@ -48,8 +47,10 @@ const useSignupComp = () => {
 
       localStorage.setItem("common-user", JSON.stringify(data));
       setAuthUser(data);
+      return { success: true, data };
     } catch (error) {
       toast.error(error.message);
+      return { success: false, error: error.message };
     } finally {
       setLoading(false);
     }
@@ -76,12 +77,11 @@ function handleInputError({
     !address ||
     !phone
   ) {
-    console.log("check");
     toast.error("Please fill all the fields");
     return false;
   }
 
-  if (password != confirmPassword) {
+  if (password !== confirmPassword) {
     toast.error("Passwords do not match");
     return false;
   }
