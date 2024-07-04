@@ -1,6 +1,7 @@
 import React from "react";
 import useGetPendingInsu from "../hooks/useGetPendingInsu";
 import useReplyInsurance from "../hooks/useReplyInsurance"; // Step 1: Import useReplyInsurance
+import image from "../assets/bg.webp";
 
 const PendingRequestComp = () => {
   const { loading: loadingInsu, pendingInsu } = useGetPendingInsu();
@@ -19,7 +20,8 @@ const PendingRequestComp = () => {
   };
 
   return (
-    <div className="p-5 bg-zinc-900  min-h-screen text-white">
+    <div className="p-5 bg-zinc-900  min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>Username</div>
         <a className="absolute right-0" href="/">

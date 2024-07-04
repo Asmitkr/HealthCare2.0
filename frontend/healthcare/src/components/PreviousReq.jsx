@@ -80,8 +80,8 @@ const PreviousReq = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-1/2 w-full">
-      <div className="mt-4 w-1/2 bg-blue-700 h-full rounded-lg p-1 text-black">
+    <div className="flex  w-full">
+      <div className=" w-1/2 bg-blue-500 h-full rounded-lg p-1 text-black">
         <p className="text-xl">Previous Appointments</p>
         <div className="flex gap-2 mt-2">
           <input
@@ -89,7 +89,7 @@ const PreviousReq = () => {
             placeholder="Search by patient name..."
             value={searchTerm}
             onChange={handleSearchChange}
-            className="p-2 w-full rounded"
+            className="p-2 w-full rounded bg-transparent border-2"
           />
         </div>
         {loading ? (

@@ -1,11 +1,13 @@
 import React from "react";
 import useGetPlansComp from "../hooks/useGetPlansComp";
+import image from "../assets/bg.webp";
 
 const GetPlans = () => {
   const { loading, plansComp } = useGetPlansComp();
 
   return (
-    <div className="p-5 bg-zinc-900  min-h-screen text-white">
+    <div className="p-5 bg-zinc-900  min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>Username</div>
         <a className="absolute right-0" href="/">

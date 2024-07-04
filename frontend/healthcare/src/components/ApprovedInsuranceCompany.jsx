@@ -2,6 +2,7 @@ import React from "react";
 import useGetApprovedInsuComp from "../hooks/useGetApprovedInsuComp";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import image from "../assets/bg.webp";
 
 const ApprovedInsuranceCompany = () => {
   const { loading, approvedInsu } = useGetApprovedInsuComp();
@@ -10,7 +11,8 @@ const ApprovedInsuranceCompany = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
+    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>{authUser ? authUser.fullName : "Username"}</div>
         <a className="absolute right-0" href="/">

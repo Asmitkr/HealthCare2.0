@@ -7,7 +7,7 @@ const UpcomingApptDoc = () => {
     Array.isArray(upcomingAppts) && upcomingAppts.length > 0;
 
   return (
-    <div className="mt-2 w-1/2 bg-blue-700 h-full rounded-lg p-4 text-black overflow-auto">
+    <div className="mt-2 w-1/2 bg-blue-500 h-full rounded-lg p-4 text-black overflow-auto">
       <p className="text-xl mb-4">Upcoming Appointments</p>
       {loading ? (
         <p>Loading...</p>

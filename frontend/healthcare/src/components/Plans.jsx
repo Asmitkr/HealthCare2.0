@@ -2,6 +2,7 @@ import React from "react";
 import GetPlans from "./GetPlans";
 import useAddPlans from "../hooks/useAddPlans";
 import { useState } from "react";
+import image from "../assets/bg.webp";
 
 const AddPlans = () => {
   const { addPlan, loading } = useAddPlans();
@@ -34,7 +35,8 @@ const AddPlans = () => {
     }
   };
   return (
-    <div className="p-5 bg-zinc-900  min-h-screen text-white">
+    <div className="p-5 bg-zinc-900  min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>Username</div>
         <a className="absolute right-0" href="/">

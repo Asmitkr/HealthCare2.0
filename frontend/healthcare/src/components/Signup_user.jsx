@@ -2,6 +2,7 @@ import React from "react";
 import image from "../assets/login.jpg";
 import { useState } from "react";
 import useSignupUser from "../hooks/useSignupUser";
+import { useNavigate } from "react-router-dom";
 
 const Signup_user = () => {
   const [inputs, SetInputs] = useState({
@@ -14,12 +15,13 @@ const Signup_user = () => {
     age: "",
     phone: "",
   });
-
+  const navigate = useNavigate();
   const { loading, signupUser } = useSignupUser();
   const handleSubmit = async (e) => {
     e.preventDefault();
     let updatedInputs = { ...inputs };
     await signupUser(updatedInputs);
+    navigate("/userhome");
   };
 
   return (
@@ -107,8 +109,8 @@ const Signup_user = () => {
                 }
               />
               <div>
-                <button
-                  className="btn btn-block btn-sm mt-2 border border-slate-700"
+                <button href='/userhome'
+                  className="btn btn-block btn-sm mt-2 border border-slate-700 bg-green-500 w-72 outline-none rounded mt-3 border"
                   disabled={loading}
                 >
                   {loading ? (
@@ -124,6 +126,7 @@ const Signup_user = () => {
                 value="Sign Up"
               /> */}
             </form>
+            <a className="absolute right-0 text-blue-500 mt-3" href="/">Already have an account?</a>
           </div>
         </div>
       </div>

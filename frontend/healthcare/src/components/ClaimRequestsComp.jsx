@@ -2,6 +2,7 @@ import React from "react";
 import useGetClaims from "../hooks/useGetClaims";
 import useReplyClaim from "../hooks/useReplyClaim";
 import { useState, useEffect } from "react";
+import image from "../assets/bg.webp";
 
 const ClaimRequestsComp = () => {
   const { loading: claimsLoading, claims: fetchedClaims } = useGetClaims();
@@ -21,7 +22,8 @@ const ClaimRequestsComp = () => {
   };
 
   return (
-    <div className="p-5 bg-zinc-900  min-h-screen text-white">
+    <div className="p-5 bg-zinc-900  min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>Username</div>
         <a className="absolute right-0" href="/">

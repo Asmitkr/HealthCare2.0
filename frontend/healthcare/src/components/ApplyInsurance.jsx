@@ -3,6 +3,7 @@ import { useState } from "react";
 import SearchCompanies from "./SearchCompanies";
 import useCompanyInfo from "../../zustand/useCompanyInfo";
 import useApplyInsurance from "../hooks/useApplyInsurance";
+import image from "../assets/bg.webp";
 
 const ApplyInsurance = () => {
   const { companyInfo } = useCompanyInfo();
@@ -38,7 +39,8 @@ const ApplyInsurance = () => {
   };
 
   return (
-    <div className=" p-5 bg-zinc-900 min-h-screen  text-white">
+    <div className=" p-5 bg-zinc-900 min-h-screen  text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>Username</div>
         <a className="absolute right-0" href="/">

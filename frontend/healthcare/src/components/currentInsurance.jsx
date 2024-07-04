@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useGetInsurance from "../hooks/useGetInsurance";
 import useApplyClaim from "../hooks/useApplyClaim";
+import image from "../assets/bg.webp";
 
 const InsuranceRow = ({
   ins,
@@ -68,7 +69,8 @@ const CurrentInsurance = () => {
   };
 
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
+    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>Username</div>
         <a className="absolute right-0" href="/">

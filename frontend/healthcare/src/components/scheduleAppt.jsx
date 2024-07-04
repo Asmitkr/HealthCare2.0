@@ -4,7 +4,7 @@ import SearchDoctors from "./SearchDoctors";
 import useDoctorInfo from "../../zustand/useDoctorInfo";
 import useScheduleAppt from "../hooks/useScheduleAppt";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
-
+import image from "../assets/bg.webp";
 const ScheduleAppt = () => {
   const { doctorInfo } = useDoctorInfo();
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -39,7 +39,8 @@ const ScheduleAppt = () => {
     await scheduleAppt(data);
   };
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white">
+    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
       <div className="relative flex mb-2">
         <div>{authUser ? authUser.fullName : "Username"}</div>{" "}
         <a className="absolute right-0" href="/">

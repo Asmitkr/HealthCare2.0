@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useGetAppts from "../hooks/useGetAppts";
 import MessageContainer from "./MessageContainer";
 import useConversation from "../../zustand/useConversation";
+import image from "../assets/bg.webp";
 
 const CurrentAppts = () => {
   const { loading, appts } = useGetAppts();
@@ -29,8 +30,9 @@ const CurrentAppts = () => {
   };
 
   return (
-    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white flex">
-      <div className="flex flex-col w-1/2">
+    <div className="p-5 bg-zinc-900 w-full min-h-screen text-white flex"
+    style={{ backgroundImage: `url(${image})`, backgroundSize: "cover" }}>
+      <div className="flex flex-col w-full">
         <div className="relative flex mb-2">
           <div>Username</div>
           <a className="absolute right-0" href="/">
@@ -44,7 +46,7 @@ const CurrentAppts = () => {
             <a href="/scheduleappt">Schedule Appointment</a>
             <a href="/applyinsurance">Apply for Insurance</a>
           </div>
-          <div className="w-full bg-blue-300 h-full rounded-lg p-1 text-black">
+          <div className="w-1/2 bg-blue-300 h-full rounded-lg p-1 text-black">
             <p className="text-xl">Current Appointment</p>
             {loading ? (
               <p>Loading appointments...</p>
